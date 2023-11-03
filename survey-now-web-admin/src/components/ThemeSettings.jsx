@@ -17,7 +17,7 @@ const ThemeSettings = () => {
   const currentColor = useSelector((state) => state.state.currentColor);
 
   const handleCurrentModeChange = (e) => {
-    setCurrentMode(e.target.value);
+    dispatch(setCurrentMode(e.target.value));
     localStorage.setItem("themeMode", e.target.value);
   };
 
