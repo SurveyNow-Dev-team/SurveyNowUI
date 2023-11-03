@@ -17,6 +17,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
+import { Alert } from "@mui/material";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
@@ -52,6 +53,9 @@ export default function Login() {
 
   const [email, setEmailForm] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [message, setMessage] = React.useState(undefined);
+  const [passError, setPassError] = React.useState(undefined);
+  const [emailError, setEmailError] = React.useState(undefined);
 
   const handleEmailChange = (e) => {
     setEmailForm(e.target.value);
@@ -65,6 +69,22 @@ export default function Login() {
     try {
       event.preventDefault();
 
+      if (!email || email.trim() === "") {
+        setEmailError("Email is required.");
+      } else {
+        setEmailError(undefined);
+      }
+      if (!password || password.trim() === "") {
+        setPassError("Password is required.");
+      } else {
+        setPassError(undefined);
+      }
+
+      if (!emailError || !passError) {
+        setMessage(undefined);
+        return;
+      }
+
       const data = await login({
         email: email,
         password: password,
@@ -73,26 +93,39 @@ export default function Login() {
       //log data
       console.log(JSON.stringify(data, null, 2));
 
-      const token = jwtDecode(data?.token);
-      console.log(JSON.stringify(token, null, 2) + "\n");
-
       const roleData = data?.role;
       if (roleData !== "Admin") {
-        alert("Cút");
+        setMessage("Cút");
+        return;
       }
-
       //Call action to update data in store (redux)
-        dispatch(setRole(data.role || ""));
-        dispatch(setAvatarUrl(data.avatarUrl || ""));
-        dispatch(setFullName(data.fullName || ""));
-        dispatch(setEmail(data.email || ""));
-        dispatch(setGender(data.gender || ""));
-        dispatch(setPoint(data.point || ""));
-        dispatch(setAuthentication(true));
+      dispatch(setRole(data.role || ""));
+      dispatch(setAvatarUrl(data.avatarUrl || ""));
+      dispatch(setFullName(data.fullName || ""));
+      dispatch(setEmail(data.email || ""));
+      dispatch(setGender(data.gender || ""));
+      dispatch(setPoint(data.point || ""));
+      dispatch(setAuthentication(true));
 
+      //Store token
+      const token = data?.token || "";
+      localStorage.setItem("token", JSON.stringify(token));
+
+      setMessage(undefined);
     } catch (error) {
-      console.log(error.message);
-      alert("Error: " + erorr.message);
+      console.log(JSON.stringify(error.response.data, null, 2));
+      if (error.response) {
+        if (error.response.data.title) {
+          console.log(error.response?.data?.title || "Undefined.");
+          setMessage(error.response?.data?.title || "Undefined.");
+        } else {
+          console.log(error.response?.data?.Message || "Undefined.");
+          setMessage(error.response?.data?.Message || "Undefined.");
+        }
+      } else {
+        console.log(error.message);
+        setMessage(error.message);
+      }
     }
   };
 
@@ -120,6 +153,11 @@ export default function Login() {
             noValidate
             sx={{ mt: 1 }}
           >
+            {message && (
+              <Alert variant="outlined" severity="error">
+                {`Error: ${message}`}
+              </Alert>
+            )}
             <TextField
               margin="normal"
               required
@@ -131,6 +169,8 @@ export default function Login() {
               autoFocus
               value={email}
               onChange={handleEmailChange}
+              error={emailError}
+              helperText={emailError}
             />
             <TextField
               margin="normal"
@@ -143,6 +183,8 @@ export default function Login() {
               autoComplete="current-password"
               value={password}
               onChange={handlePasswordChange}
+              error={passError}
+              helperText={passError}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -156,20 +198,9 @@ export default function Login() {
             >
               Sign In
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
+
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>

@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const URL = "http://survey-now.us-east-1.elasticbeanstalk.com/";
+const url = "http://survey-now.us-east-1.elasticbeanstalk.com/";
 
 const instance = axios.create({
-  baseURL: URL,
+  baseURL: url,
   headers: {
     "Content-Type": "application/json",
   },
