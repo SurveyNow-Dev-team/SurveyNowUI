@@ -38,7 +38,7 @@ function Copyright(props) {
     >
       {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
+        Survey Now
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -54,18 +54,18 @@ export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [email, setEmailForm] = React.useState(undefined);
-  const [password, setPassword] = React.useState(undefined);
+  const [email, setEmailForm] = React.useState("");
+  const [password, setPassword] = React.useState("");
   const [message, setMessage] = React.useState(undefined);
-  const [passError, setPassError] = React.useState(undefined);
-  const [emailError, setEmailError] = React.useState(undefined);
+  const [passError, setPassError] = React.useState("");
+  const [emailError, setEmailError] = React.useState("");
 
   const handleEmailChange = (e) => {
-    setEmailForm(e.target.value);
+    setEmailForm(e.target.value || "");
   };
 
   const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
+    setPassword(e.target.value) || "";
   };
 
   const handleSubmit = async (event) => {
@@ -75,18 +75,18 @@ export default function Login() {
       console.log(`Email error: ${emailError}`);
       console.log(`Password error: ${passError}`);
 
-      if (email || email.trim() === "") {
-        setEmailError("Email is required.");
+      if (email.trim() === "") {
+        setEmailError(`Email is required.`);
       } else {
-        setEmailError(undefined);
+        setEmailError("");
       }
-      if (password || password.trim() === "") {
-        setPassError("Password is required.");
+      if (password.trim() === "") {
+        setPassError(`Password is required. `);
       } else {
-        setPassError(undefined);
+        setPassError("");
       }
 
-      if (!emailError || !passError) {
+      if (emailError !== "" || passError !== "") {
         setMessage(undefined);
         return;
       }
@@ -126,10 +126,10 @@ export default function Login() {
         avatarUrl: data.avatarUrl,
         email: data.email,
         gender: data.gender,
-        point: data.point
-      }
+        point: data.point,
+      };
 
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem("user", JSON.stringify(user));
 
       setMessage(undefined);
 
@@ -186,12 +186,13 @@ export default function Login() {
               fullWidth
               id="email"
               label="Email Address"
+              type="email"
               name="email"
               autoComplete="email"
               autoFocus
-              value={email}
+              value={email || ""}
               onChange={handleEmailChange}
-              error={emailError ? false : true}
+              error={emailError === "" ? false : true}
               helperText={emailError}
             />
             <TextField
@@ -203,9 +204,9 @@ export default function Login() {
               type="password"
               id="password"
               autoComplete="current-password"
-              value={password}
+              value={password || ""}
               onChange={handlePasswordChange}
-              error={passError ? false : true}
+              error={passError === "" ? false : true}
               helperText={passError}
             />
             <FormControlLabel
