@@ -1,20 +1,35 @@
-import React from 'react';
-import { AccumulationChartComponent, AccumulationSeriesCollectionDirective, AccumulationSeriesDirective, AccumulationLegend, PieSeries, AccumulationDataLabel, Inject, AccumulationTooltip } from '@syncfusion/ej2-react-charts';
-
-import { useStateContext } from '../../contexts/ContextProvider';
+import React from "react";
+import { useSelector } from "react-redux";
+import {
+  AccumulationChartComponent,
+  AccumulationSeriesCollectionDirective,
+  AccumulationSeriesDirective,
+  AccumulationLegend,
+  PieSeries,
+  AccumulationDataLabel,
+  Inject,
+  AccumulationTooltip,
+} from "@syncfusion/ej2-react-charts";
 
 const Doughnut = ({ id, data, legendVisiblity, height }) => {
-  const { currentMode } = useStateContext();
+  const currentMode = useSelector((state) => state.state.currentMode);
 
   return (
     <AccumulationChartComponent
       id={id}
-      legendSettings={{ visible: legendVisiblity, background: 'white' }}
+      legendSettings={{ visible: legendVisiblity, background: "white" }}
       height={height}
-      background={currentMode === 'Dark' ? '#33373E' : '#fff'}
+      background={currentMode === "Dark" ? "#33373E" : "#fff"}
       tooltip={{ enable: true }}
     >
-      <Inject services={[AccumulationLegend, PieSeries, AccumulationDataLabel, AccumulationTooltip]} />
+      <Inject
+        services={[
+          AccumulationLegend,
+          PieSeries,
+          AccumulationDataLabel,
+          AccumulationTooltip,
+        ]}
+      />
       <AccumulationSeriesCollectionDirective>
         <AccumulationSeriesDirective
           name="Sale"
@@ -30,11 +45,11 @@ const Doughnut = ({ id, data, legendVisiblity, height }) => {
           explodeIndex={2}
           dataLabel={{
             visible: true,
-            name: 'text',
-            position: 'Inside',
+            name: "text",
+            position: "Inside",
             font: {
-              fontWeight: '600',
-              color: '#fff',
+              fontWeight: "600",
+              color: "#fff",
             },
           }}
         />
