@@ -11,6 +11,7 @@ import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 
 import { Navbar, Footer, Sidebar, ThemeSettings } from "./components";
+import Login from "./pages/Login/Login";
 import {
   Ecommerce,
   Orders,
@@ -35,8 +36,8 @@ const App = () => {
   const dispatch = useDispatch();
   const currentColor = useSelector((state) => state.state.currentColor);
   const currentMode = useSelector((state) => state.state.currentMod);
-  const activeMenu = useSelector((state) => state.activeMenu);
-  const themeSettings = useSelector((state) => state.themeSettings);
+  const activeMenu = useSelector((state) => state.state.activeMenu);
+  const themeSettings = useSelector((state) => state.state.themeSettings);
 
   useEffect(() => {
     const currentThemeColor = localStorage.getItem("colorMode");
@@ -89,6 +90,9 @@ const App = () => {
                 {/* dashboard  */}
                 <Route path="/" element={<Ecommerce />} />
                 <Route path="/ecommerce" element={<Ecommerce />} />
+
+                {/* Login */}
+                <Route path="/login" element={<Login />} />
 
                 {/* pages  */}
                 <Route path="/orders" element={<Orders />} />
