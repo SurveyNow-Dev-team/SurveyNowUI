@@ -9,6 +9,12 @@ import avatar from "../data/avatar.jpg";
 const UserProfile = () => {
   const currentColor = useSelector((state) => state.state.currentColor);
 
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const fullName = user.fullName;
+  const email = user.email;
+  const role = user.role;
+
   return (
     <div className="nav-item absolute right-1 top-16 bg-white dark:bg-[#42464D] p-8 rounded-lg w-96">
       <div className="flex justify-between items-center">
@@ -19,6 +25,7 @@ const UserProfile = () => {
           bgHoverColor="light-gray"
           size="2xl"
           borderRadius="50%"
+          isLogOut={false}
         />
       </div>
       <div className="flex gap-5 items-center mt-6 border-color border-b-1 pb-6">
@@ -30,15 +37,15 @@ const UserProfile = () => {
         <div>
           <p className="font-semibold text-xl dark:text-gray-200">
             {" "}
-            Michael Roberts{" "}
+            {`${fullName}`}{" "}
           </p>
           <p className="text-gray-500 text-sm dark:text-gray-400">
             {" "}
-            Administrator{" "}
+            {`${role}`}{" "}
           </p>
           <p className="text-gray-500 text-sm font-semibold dark:text-gray-400">
             {" "}
-            info@shop.com{" "}
+            {`${email}`}{" "}
           </p>
         </div>
       </div>
@@ -73,7 +80,8 @@ const UserProfile = () => {
           text="Logout"
           borderRadius="10px"
           width="full"
-        />
+          isLogOut={true}
+        ></Button>
       </div>
     </div>
   );

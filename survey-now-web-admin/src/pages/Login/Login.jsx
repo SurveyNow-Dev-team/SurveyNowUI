@@ -25,6 +25,8 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { login } from "../../apis/auth";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { Troubleshoot } from "@mui/icons-material";
 
 function Copyright(props) {
   return (
@@ -50,9 +52,10 @@ const defaultTheme = createTheme();
 
 export default function Login() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const [email, setEmailForm] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [email, setEmailForm] = React.useState(undefined);
+  const [password, setPassword] = React.useState(undefined);
   const [message, setMessage] = React.useState(undefined);
   const [passError, setPassError] = React.useState(undefined);
   const [emailError, setEmailError] = React.useState(undefined);
@@ -69,12 +72,15 @@ export default function Login() {
     try {
       event.preventDefault();
 
-      if (!email || email.trim() === "") {
+      console.log(`Email error: ${emailError}`);
+      console.log(`Password error: ${passError}`);
+
+      if (email || email.trim() === "") {
         setEmailError("Email is required.");
       } else {
         setEmailError(undefined);
       }
-      if (!password || password.trim() === "") {
+      if (password || password.trim() === "") {
         setPassError("Password is required.");
       } else {
         setPassError(undefined);
@@ -84,6 +90,8 @@ export default function Login() {
         setMessage(undefined);
         return;
       }
+
+      console.log(`Valid data.`);
 
       const data = await login({
         email: email,
@@ -109,9 +117,23 @@ export default function Login() {
 
       //Store token
       const token = data?.token || "";
+      console.log(JSON.stringify(token));
       localStorage.setItem("token", JSON.stringify(token));
 
+      const user = {
+        role: data.role,
+        fullName: data.fullName,
+        avatarUrl: data.avatarUrl,
+        email: data.email,
+        gender: data.gender,
+        point: data.point
+      }
+
+      localStorage.setItem('user', JSON.stringify(user));
+
       setMessage(undefined);
+
+      navigate("/ecommerce");
     } catch (error) {
       console.log(JSON.stringify(error.response.data, null, 2));
       if (error.response) {
@@ -169,7 +191,7 @@ export default function Login() {
               autoFocus
               value={email}
               onChange={handleEmailChange}
-              error={emailError}
+              error={emailError ? false : true}
               helperText={emailError}
             />
             <TextField
@@ -183,7 +205,7 @@ export default function Login() {
               autoComplete="current-password"
               value={password}
               onChange={handlePasswordChange}
-              error={passError}
+              error={passError ? false : true}
               helperText={passError}
             />
             <FormControlLabel

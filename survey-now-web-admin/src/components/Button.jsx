@@ -2,6 +2,10 @@ import React from "react";
 
 import { useDispatch } from "react-redux";
 import { setIsClicked } from "../store/slices/state.slice";
+import { useNavigate } from "react-router-dom";
+
+import { setAuthentication } from "../store/slices/auth.slice";
+import { LocalSeeOutlined } from "@mui/icons-material";
 
 const Button = ({
   icon,
@@ -12,6 +16,7 @@ const Button = ({
   text,
   borderRadius,
   width,
+  isLogOut,
 }) => {
   const initialState = {
     chat: false,
@@ -22,10 +27,24 @@ const Button = ({
 
   const dispatch = useDispatch();
 
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(setIsClicked(initialState));
+
+    if (isLogOut) {
+      console.log("logout");
+      localStorage.clear();
+      dispatch(setAuthentication(false));
+      navigate("/login");
+    }
+  };
+
   return (
     <button
       type="button"
-      onClick={() => dispatch(setIsClicked(initialState))}
+      // onClick={() => dispatch(setIsClicked(initialState))}
+      onClick={handleLogout}
       style={{ backgroundColor: bgColor, color, borderRadius }}
       className={` text-${size} p-3 w-${width} hover:drop-shadow-xl hover:bg-${bgHoverColor}`}
     >

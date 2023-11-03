@@ -1,17 +1,9 @@
 import React, { useEffect } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
-import { useDispatch, useSelector } from "react-redux";
-import {
-  setCurrentColor,
-  setCurrentMode,
-  setThemeSettings,
-} from "./store/slices/state.slice";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { FiSettings } from "react-icons/fi";
-import { TooltipComponent } from "@syncfusion/ej2-react-popups";
-
-import { Navbar, Footer, Sidebar, ThemeSettings } from "./components";
 import Login from "./pages/Login/Login";
+
+import { MainComponent } from "./components/MainComponent/MainComponent";
 import {
   Ecommerce,
   Orders,
@@ -31,96 +23,178 @@ import {
   Editor,
 } from "./pages";
 import "./App.css";
+import PrivateRoute from "./components/Route/PrivateRoute";
 
 const App = () => {
-  const dispatch = useDispatch();
-  const currentColor = useSelector((state) => state.state.currentColor);
-  const currentMode = useSelector((state) => state.state.currentMod);
-  const activeMenu = useSelector((state) => state.state.activeMenu);
-  const themeSettings = useSelector((state) => state.state.themeSettings);
-
-  useEffect(() => {
-    const currentThemeColor = localStorage.getItem("colorMode");
-    const currentThemeMode = localStorage.getItem("themeMode");
-    if (currentThemeColor && currentThemeMode) {
-      dispatch(setCurrentColor(currentThemeColor));
-      dispatch(setCurrentMode(currentThemeMode));
-    }
-  }, []);
-
   return (
-    <div className={currentMode === "Dark" ? "dark" : ""}>
-      <BrowserRouter>
-        <div className="flex relative dark:bg-main-dark-bg">
-          <div className="fixed right-4 bottom-4" style={{ zIndex: "1000" }}>
-            <TooltipComponent content="Settings" position="Top">
-              <button
-                type="button"
-                onClick={() => dispatch(setThemeSettings(true))}
-                style={{ background: currentColor, borderRadius: "50%" }}
-                className="text-3xl text-white p-3 hover:drop-shadow-xl hover:bg-light-gray"
-              >
-                <FiSettings />
-              </button>
-            </TooltipComponent>
-          </div>
-          {activeMenu ? (
-            <div className="w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white ">
-              <Sidebar />
-            </div>
-          ) : (
-            <div className="w-0 dark:bg-secondary-dark-bg">
-              <Sidebar />
-            </div>
-          )}
-          <div
-            className={
-              activeMenu
-                ? "dark:bg-main-dark-bg  bg-main-bg min-h-screen md:ml-72 w-full  "
-                : "bg-main-bg dark:bg-main-dark-bg  w-full min-h-screen flex-2 "
-            }
-          >
-            <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full ">
-              <Navbar />
-            </div>
-            <div>
-              {themeSettings && <ThemeSettings />}
+    <BrowserRouter>
+      <Routes>
+        {/* Login */}
+        <Route path="/" element={<Navigate to="/login" />} />
+        <Route
+          path="/login"
+          element={<PrivateRoute page="login" component={<Login />} />}
+        />
 
-              <Routes>
-                {/* dashboard  */}
-                <Route path="/" element={<Ecommerce />} />
-                <Route path="/ecommerce" element={<Ecommerce />} />
+        {/* dashboard  */}
+        <Route
+          path="/ecommerce"
+          element={
+            <PrivateRoute
+              page="ecommerce"
+              component={<MainComponent child={<Ecommerce />} />}
+            />
+          }
+        />
 
-                {/* Login */}
-                <Route path="/login" element={<Login />} />
+        {/* pages  */}
+        <Route
+          path="/orders"
+          element={
+            <PrivateRoute
+              page="orders"
+              component={<MainComponent child={<Orders />} />}
+            />
+          }
+        />
+        <Route
+          path="/employees"
+          element={
+            <PrivateRoute
+              page="employees"
+              component={<MainComponent child={<Employees />} />}
+            />
+          }
+        />
+        <Route
+          path="/customers"
+          element={
+            <PrivateRoute
+              page="customers"
+              component={<MainComponent child={<Customers />} />}
+            />
+          }
+        />
 
-                {/* pages  */}
-                <Route path="/orders" element={<Orders />} />
-                <Route path="/employees" element={<Employees />} />
-                <Route path="/customers" element={<Customers />} />
+        {/* apps  */}
+        <Route
+          path="/kanban"
+          element={
+            <PrivateRoute
+              page="kanban"
+              component={<MainComponent child={<Kanban />} />}
+            />
+          }
+        />
+        <Route
+          path="/editor"
+          element={
+            <PrivateRoute
+              page="editor"
+              component={<MainComponent child={<Editor />} />}
+            />
+          }
+        />
+        <Route
+          path="/calendar"
+          element={
+            <PrivateRoute
+              page="calendar"
+              component={
+                <MainComponent child={<MainComponent child={<Calendar />} />} />
+              }
+            />
+          }
+        />
+        <Route
+          path="/color-picker"
+          element={
+            <PrivateRoute
+              page="color-picker"
+              component={
+                <MainComponent
+                  child={<MainComponent child={<ColorPicker />} />}
+                />
+              }
+            />
+          }
+        />
 
-                {/* apps  */}
-                <Route path="/kanban" element={<Kanban />} />
-                <Route path="/editor" element={<Editor />} />
-                <Route path="/calendar" element={<Calendar />} />
-                <Route path="/color-picker" element={<ColorPicker />} />
-
-                {/* charts  */}
-                <Route path="/line" element={<Line />} />
-                <Route path="/area" element={<Area />} />
-                <Route path="/bar" element={<Bar />} />
-                <Route path="/pie" element={<Pie />} />
-                <Route path="/financial" element={<Financial />} />
-                <Route path="/color-mapping" element={<ColorMapping />} />
-                <Route path="/pyramid" element={<Pyramid />} />
-                <Route path="/stacked" element={<Stacked />} />
-              </Routes>
-            </div>
-            <Footer />
-          </div>
-        </div>
-      </BrowserRouter>
-    </div>
+        {/* charts  */}
+        <Route
+          path="/line"
+          element={
+            <PrivateRoute
+              page="line"
+              component={<MainComponent child={<Line />} />}
+            />
+          }
+        />
+        <Route
+          path="/area"
+          element={
+            <PrivateRoute
+              page="area"
+              component={<MainComponent child={<Area />} />}
+            />
+          }
+        />
+        <Route
+          path="/bar"
+          element={
+            <PrivateRoute
+              page="bar"
+              component={<MainComponent child={<Bar />} />}
+            />
+          }
+        />
+        <Route
+          path="/pie"
+          element={
+            <PrivateRoute
+              page="pie"
+              component={<MainComponent child={<Pie />} />}
+            />
+          }
+        />
+        <Route
+          path="/financial"
+          element={
+            <PrivateRoute
+              page="financial"
+              component={<MainComponent child={<Financial />} />}
+            />
+          }
+        />
+        <Route
+          path="/color-mapping"
+          element={
+            <PrivateRoute
+              page="color-mapping"
+              component={<MainComponent child={<ColorMapping />} />}
+            />
+          }
+        />
+        <Route
+          path="/pyramid"
+          element={
+            <PrivateRoute
+              page="pyramid"
+              component={<MainComponent child={<Pyramid />} />}
+            />
+          }
+        />
+        <Route
+          path="/stacked"
+          element={
+            <PrivateRoute
+              page="stacked"
+              component={<MainComponent child={<Stacked />} />}
+            />
+          }
+        />
+      </Routes>
+    </BrowserRouter>
   );
 };
 

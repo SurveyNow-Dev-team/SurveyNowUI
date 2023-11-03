@@ -38,6 +38,8 @@ const Navbar = () => {
   const activeMenu = useSelector((state) => state.state.activeMenu);
   const isClicked = useSelector((state) => state.state.isClicked);
   const screenSize = useSelector((state) => state.state.screenSize);
+  const user = JSON.parse(localStorage.getItem("user"));
+  const fullName = user.fullName;
 
   useEffect(() => {
     const handleResize = () => dispatch(setScreenSize(window.innerWidth));
@@ -101,7 +103,7 @@ const Navbar = () => {
             <p>
               <span className="text-gray-400 text-14">Hi,</span>{" "}
               <span className="text-gray-400 font-bold ml-1 text-14">
-                Michael
+                {fullName}
               </span>
             </p>
             <MdKeyboardArrowDown className="text-gray-400 text-14" />
