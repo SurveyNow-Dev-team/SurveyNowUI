@@ -24,7 +24,7 @@ const columns = [
     field: "point",
     headerName: "Point",
     type: "number",
-    minWidth: 100,
+    minWidth: 130,
     headerAlign: "center",
     align: "center",
   },
@@ -45,7 +45,7 @@ const columns = [
   {
     field: "status",
     headerName: "Status",
-    minWidth: 100,
+    minWidth: 130,
     headerAlign: "center",
     align: "center",
     renderCell: (params) => <Chip label={params.value} color="warning" />,
@@ -53,8 +53,8 @@ const columns = [
   {
     field: "detail",
     headerName: "Detail",
-    minWidth: 100,
-    headerAlign: "right",
+    minWidth: 130,
+    headerAlign: "center",
     align: "center",
   },
 ];
@@ -74,8 +74,8 @@ export default function Redeem() {
   }, [page, size]);
 
   return (
-    // <div className="mx-10 md:m-8 mt-5 p-2 md:p-5 bg-white rounded-3xl" style={{width: "100%"}}>
-    <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
+    <div className="mx-10 md:m-8 mt-5 p-2 md:p-5 bg-white rounded-3xl" style={{width: "100%"}}>
+    {/* <div className="m-2 md:m-10 mt- p-2 md:p-10 bg-white rounded-3xl"> */}
       <Header title="Redeem Transaction" category="" />
       {loading ? (
         <p>Loading data...</p>

@@ -54,7 +54,7 @@ const columns = [
     field: "detail",
     headerName: "Detail",
     minWidth: 100,
-    headerAlign: "right",
+    headerAlign: "center",
     align: "center",
   },
 ];
@@ -74,8 +74,8 @@ export default function Purchase() {
   }, [page, size]);
 
   return (
-    // <div className="mx-10 md:m-8 mt-5 p-2 md:p-5 bg-white rounded-3xl" style={{width: "100%"}}>
-    <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
+    <div className="mx-4 md:m-10 mt-5 p-6 md:p-6 bg-white rounded-3xl" >
+    {/* <div className="m-2 md:m-10 mt-10 p-2 md:p-10 bg-white rounded-3xl"> */}
       <Header title="Pending Transaction" category="" />
       {loading ? (
         <p>Loading data...</p>
