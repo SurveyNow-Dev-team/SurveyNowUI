@@ -1,48 +1,65 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
+import { Chip } from "@mui/material";
 
 import { getPendingPurchase } from "../../../apis/transaction/purchase";
+import { Header } from "../../../components";
 
 const columns = [
-  { field: "id", headerName: "ID", width: 70 },
-  { field: "paymentMethod", headerName: "Method", width: 100 },
+  {
+    field: "id",
+    headerName: "ID",
+    minWidth: 100,
+    headerAlign: "center",
+    align: "center",
+  },
+  {
+    field: "paymentMethod",
+    headerName: "Method",
+    minWidth: 100,
+    headerAlign: "center",
+    align: "center",
+  },
   {
     field: "point",
     headerName: "Point",
     type: "number",
-    width: 90,
+    minWidth: 100,
+    headerAlign: "center",
+    align: "center",
   },
   {
     field: "amount",
     headerName: "Amount",
-    type: "number",
-    width: 150,
+    headerAlign: "center",
+    minWidth: 150,
+    align: "center",
   },
   {
     field: "date",
     headerName: "Date",
-    width: 200,
+    headerAlign: "center",
+    minWidth: 200,
+    align: "center",
   },
   {
     field: "status",
     headerName: "Status",
-    width: 90,
+    minWidth: 100,
+    headerAlign: "center",
+    align: "center",
+    renderCell: (params) => <Chip label={params.value} color="success" />,
+  },
+  {
+    field: "detail",
+    headerName: "Detail",
+    minWidth: 100,
+    headerAlign: "right",
+    align: "center",
   },
 ];
 
-// const rows = [
-//   { id: 1, lastName: "Snow", firstName: "Jon", age: 35 },
-//   { id: 2, lastName: "Lannister", firstName: "Cersei", age: 42 },
-//   { id: 3, lastName: "Lannister", firstName: "Jaime", age: 45 },
-//   { id: 4, lastName: "Stark", firstName: "Arya", age: 16 },
-//   { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-//   { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-//   { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-//   { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-//   { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-// ];
-
-export default function DataTable() {
+export default function Purchase() {
   const [page, setPage] = React.useState(0);
   const [size, setSize] = React.useState(5);
   const [data, setData] = React.useState([]);
@@ -56,37 +73,41 @@ export default function DataTable() {
   }, [page, size]);
 
   return (
-    <div style={{ height: 400, width: "100%" }}>
-      <DataGrid
-        rows={data.map((transaction) => ({
-          id: transaction.id,
-          transactionType: transaction.transactionType,
-          paymentMethod: transaction.paymentMethod,
-          point: transaction.point,
-          amount: `${transaction.amount} ${transaction.currency}`,
-          date: transaction.date,
-          sourceAccount: transaction.sourceAccount,
-          destinationAccount: transaction.destinationAccount,
-          purchaseCode: transaction.purchaseCode,
-          status: transaction.status,
-        }))}
-        columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: { page: page, pageSize: size },
-          },
-        }}
-        pagination
-        paginationMode="server"
-        paginationModel={{ page: page, pageSize: size }}
-        onPaginationModelChange={(newPage) => {
-          setPage(newPage.page);
-          setSize(newPage.pageSize);
-        }}
-        rowCount={totalRecord}
-        pageSizeOptions={[5, 10, 15, 20]}
-        checkboxSelection
-      />
+    // <div className="mx-10 md:m-8 mt-5 p-2 md:p-5 bg-white rounded-3xl" style={{width: "100%"}}>
+    <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
+      <Header title="Pending Transaction" category="" />
+      <div style={{ height: 400, width: "100%" }}>
+        <div style={{ display: "block", width: "100%" }}>
+          <DataGrid
+            rows={data.map((transaction) => ({
+              id: transaction.id,
+              paymentMethod: transaction.paymentMethod,
+              point: transaction.point,
+              amount: `${transaction.amount} ${transaction.currency}`,
+              date: transaction.date,
+              status: transaction.status,
+              detail: `Detail`,
+            }))}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: { page: page, pageSize: size },
+              },
+            }}
+            pagination
+            paginationMode="server"
+            paginationModel={{ page: page, pageSize: size }}
+            onPaginationModelChange={(newPage) => {
+              setPage(newPage.page);
+              setSize(newPage.pageSize);
+            }}
+            rowCount={totalRecord}
+            pageSizeOptions={[5, 10, 15, 20]}
+            sx={{ maxWidth: "100%" }}
+            // checkboxSelection
+          />
+        </div>
+      </div>
     </div>
   );
 }
