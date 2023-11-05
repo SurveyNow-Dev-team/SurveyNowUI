@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Login from "./pages/Login/Login";
 import TransactionsHistory from "./pages/Transactions/History/TransactionsHistory";
+import Purchase from "./pages/Transactions/Purchase/Purchase";
 
 import { MainComponent } from "./components/MainComponent/MainComponent";
 import {
@@ -196,11 +197,11 @@ const App = () => {
         />
         {/* transactions  */}
         <Route
-          path="/transactions/history"
+          path="/transactions/purchase"
           element={
             <PrivateRoute
-              page="transactions-history"
-              component={<MainComponent child={<TransactionsHistory />} />}
+              page="transactions-purchase"
+              component={<MainComponent child={<Purchase />} />}
             />
           }
         />
