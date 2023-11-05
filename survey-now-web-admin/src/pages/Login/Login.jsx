@@ -28,6 +28,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Troubleshoot } from "@mui/icons-material";
 
+import Logo from "../../assets/images/logo.png";
+
 function Copyright(props) {
   return (
     <Typography
@@ -158,14 +160,17 @@ export default function Login() {
         <Box
           sx={{
             marginTop: 8,
+
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
+          <Avatar
+            sx={{ my: 2, bgcolor: "white", width: 90, height: 90 }}
+            alt="SurveyNow Logo"
+            src={Logo}
+          ></Avatar>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
