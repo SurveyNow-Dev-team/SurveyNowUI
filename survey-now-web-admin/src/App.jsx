@@ -205,6 +205,15 @@ const App = () => {
             />
           }
         />
+        <Route
+          path="/transactions/history"
+          element={
+            <PrivateRoute
+              page="transactions-history"
+              component={<MainComponent child={<TransactionsHistory />} />}
+            />
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
