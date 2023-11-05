@@ -9,7 +9,13 @@ const columns = [
     align: "center",
     headerAlign: "center",
   },
-  { field: "transactionType", headerName: "Transaction Type", width: 150 },
+  {
+    field: "transactionType",
+    headerName: "Transaction Type",
+    width: 200,
+    headerAlign: "center",
+    align: "center",
+  },
   {
     field: "paymentMethod",
     headerName: "Payment Method",
@@ -50,7 +56,15 @@ const columns = [
   },
 ];
 
-export default function TransactionTable({ data }) {
+export default function TransactionTable({
+  data,
+  page,
+  size,
+  totalRecord,
+  setPage,
+  setSize,
+}) {
+  console.log(`Page sdv ${page}`);
   return (
     <div style={{ height: 400, width: "100%" }}>
       <DataGrid
@@ -58,10 +72,19 @@ export default function TransactionTable({ data }) {
         columns={columns}
         initialState={{
           pagination: {
-            paginationModel: { page: 1, pageSize: 10 },
+            paginationModel: { page: page, pageSize: size },
           },
         }}
-        pageSizeOptions={[5, 10]}
+        pagination
+        paginationMode="server"
+        paginationModel={{ page: page || 0, pageSize: size || 0 }}
+        onPaginationModelChange={(newPage) => {
+          console.log(`Page ${newPage.page}`);
+          setPage(newPage.page);
+          setSize(newPage.pageSize);
+        }}
+        rowCount={totalRecord}
+        pageSizeOptions={[5, 10, 15, 20]}
         // checkboxSelection
       />
     </div>
