@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Login from "./pages/Login/Login";
+import TransactionsHistory from "./pages/Transactions/History/TransactionsHistory";
 
 import { MainComponent } from "./components/MainComponent/MainComponent";
 import {
@@ -190,6 +191,16 @@ const App = () => {
             <PrivateRoute
               page="stacked"
               component={<MainComponent child={<Stacked />} />}
+            />
+          }
+        />
+        {/* transactions  */}
+        <Route
+          path="/transactions/history"
+          element={
+            <PrivateRoute
+              page="transactions-history"
+              component={<MainComponent child={<TransactionsHistory />} />}
             />
           }
         />
