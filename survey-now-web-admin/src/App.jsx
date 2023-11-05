@@ -5,6 +5,8 @@ import Login from "./pages/Login/Login";
 import TransactionsHistory from "./pages/Transactions/History/TransactionsHistory";
 import Purchase from "./pages/Transactions/Purchase/Purchase";
 
+import Redeem from "./pages/Transactions/Redeem/Redeem";
+
 import { MainComponent } from "./components/MainComponent/MainComponent";
 import {
   Ecommerce,
@@ -202,6 +204,15 @@ const App = () => {
             <PrivateRoute
               page="transactions-purchase"
               component={<MainComponent child={<Purchase />} />}
+            />
+          }
+        />
+        <Route
+          path="/transactions/redeem"
+          element={
+            <PrivateRoute
+              page="transactions-redeem"
+              component={<MainComponent child={<Redeem />} />}
             />
           }
         />

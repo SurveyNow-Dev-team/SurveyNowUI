@@ -485,8 +485,18 @@ export const links = [
     title: 'Pages',
     links: [
       {
+        name: 'transactions/history',
+        value: 'History',
+        icon: <AiOutlineShoppingCart />,
+      },
+      {
         name: 'transactions/purchase',
         value: 'Pending Purchase',
+        icon: <AiOutlineShoppingCart />,
+      },
+      {
+        name: 'transactions/redeem',
+        value: 'Pending Redeem',
         icon: <AiOutlineShoppingCart />,
       },
       {

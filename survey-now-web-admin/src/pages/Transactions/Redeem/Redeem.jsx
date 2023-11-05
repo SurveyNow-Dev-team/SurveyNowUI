@@ -2,7 +2,7 @@ import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Chip } from "@mui/material";
 
-import { getPendingPurchase } from "../../../apis/transaction/purchase";
+import { getPendingRedeem } from "../../../apis/transaction/purchase";
 import { Header } from "../../../components";
 
 const columns = [
@@ -59,7 +59,7 @@ const columns = [
   },
 ];
 
-export default function Purchase() {
+export default function Redeem() {
   const [page, setPage] = React.useState(0);
   const [size, setSize] = React.useState(5);
   const [data, setData] = React.useState([]);
@@ -76,7 +76,7 @@ export default function Purchase() {
   return (
     // <div className="mx-10 md:m-8 mt-5 p-2 md:p-5 bg-white rounded-3xl" style={{width: "100%"}}>
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
-      <Header title="Pending Transaction" category="" />
+      <Header title="Redeem Transaction" category="" />
       {loading ? (
         <p>Loading data...</p>
       ) : (
@@ -109,7 +109,6 @@ export default function Purchase() {
               rowCount={totalRecord}
               pageSizeOptions={[5, 10, 15, 20]}
               sx={{ maxWidth: "100%" }}
-
               // checkboxSelection
             />
           </div>
@@ -129,7 +128,7 @@ const fetchData = async (
 ) => {
   console.log("Call fetch function");
   try {
-    const data = await getPendingPurchase(
+    const data = await getPendingRedeem(
       page !== undefined ? page + 1 : 0,
       size || 5
     );
