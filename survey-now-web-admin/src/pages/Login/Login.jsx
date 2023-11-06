@@ -67,7 +67,7 @@ export default function Login() {
   };
 
   const handlePasswordChange = (e) => {
-    setPassword(e.target.value) || "";
+    setPassword(e.target.value || "");
   };
 
   const handleSubmit = async (event) => {

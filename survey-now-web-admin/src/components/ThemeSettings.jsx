@@ -88,7 +88,7 @@ const ThemeSettings = () => {
                     style={{ backgroundColor: item.color }}
                     onClick={() => {
                       dispatch(setCurrentColor(item.color));
-                      localStorage.setItem("colorMode", color);
+                      localStorage.setItem("colorMode", item.color);
                     }}
                   >
                     <BsCheck
