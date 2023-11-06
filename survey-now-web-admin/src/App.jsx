@@ -1,9 +1,17 @@
 import React, { useEffect } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate
+} from "react-router-dom";
 
 import Login from "./pages/Login/Login";
 import TransactionsHistory from "./pages/Transactions/History/TransactionsHistory";
 import Purchase from "./pages/Transactions/Purchase/Purchase";
+import { PurchaseDetail } from "./pages/Transactions/Purchase/Detail/PurchaseDetail";
+
+import Redeem from "./pages/Transactions/Redeem/Redeem";
 
 import { MainComponent } from "./components/MainComponent/MainComponent";
 import {
@@ -202,6 +210,24 @@ const App = () => {
             <PrivateRoute
               page="transactions-purchase"
               component={<MainComponent child={<Purchase />} />}
+            />
+          }
+        />
+        <Route
+          path="/transactions/purchase/detail"
+          element={
+            <PrivateRoute
+              page="purchase-detail"
+              component={<MainComponent child={<PurchaseDetail />} />}
+            />
+          }
+        />
+        <Route
+          path="/transactions/redeem"
+          element={
+            <PrivateRoute
+              page="transactions-redeem"
+              component={<MainComponent child={<Redeem />} />}
             />
           }
         />

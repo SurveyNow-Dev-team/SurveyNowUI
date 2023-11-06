@@ -2,7 +2,7 @@ import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Chip } from "@mui/material";
 
-import { getPendingPurchase } from "../../../apis/transaction/purchase";
+import { getPendingRedeem } from "../../../apis/transaction/purchase";
 import { Header } from "../../../components";
 
 const columns = [
@@ -24,7 +24,7 @@ const columns = [
     field: "point",
     headerName: "Point",
     type: "number",
-    minWidth: 100,
+    minWidth: 130,
     headerAlign: "center",
     align: "center",
   },
@@ -45,7 +45,7 @@ const columns = [
   {
     field: "status",
     headerName: "Status",
-    minWidth: 100,
+    minWidth: 130,
     headerAlign: "center",
     align: "center",
     renderCell: (params) => <Chip label={params.value} color="warning" />,
@@ -53,13 +53,13 @@ const columns = [
   {
     field: "detail",
     headerName: "Detail",
-    minWidth: 100,
+    minWidth: 130,
     headerAlign: "center",
     align: "center",
   },
 ];
 
-export default function Purchase() {
+export default function Redeem() {
   const [page, setPage] = React.useState(0);
   const [size, setSize] = React.useState(5);
   const [data, setData] = React.useState([]);
@@ -74,9 +74,9 @@ export default function Purchase() {
   }, [page, size]);
 
   return (
-    <div className="mx-4 md:m-10 mt-5 p-6 md:p-6 bg-white rounded-3xl" >
-    {/* <div className="m-2 md:m-10 mt-10 p-2 md:p-10 bg-white rounded-3xl"> */}
-      <Header title="Pending Transaction" category="" />
+    <div className="mx-10 md:m-8 mt-5 p-2 md:p-5 bg-white rounded-3xl" style={{width: "100%"}}>
+    {/* <div className="m-2 md:m-10 mt- p-2 md:p-10 bg-white rounded-3xl"> */}
+      <Header title="Redeem Transaction" category="" />
       {loading ? (
         <p>Loading data...</p>
       ) : (
@@ -109,7 +109,6 @@ export default function Purchase() {
               rowCount={totalRecord}
               pageSizeOptions={[5, 10, 15, 20]}
               sx={{ maxWidth: "100%" }}
-
               // checkboxSelection
             />
           </div>
@@ -129,7 +128,7 @@ const fetchData = async (
 ) => {
   console.log("Call fetch function");
   try {
-    const data = await getPendingPurchase(
+    const data = await getPendingRedeem(
       page !== undefined ? page + 1 : 0,
       size || 5
     );
