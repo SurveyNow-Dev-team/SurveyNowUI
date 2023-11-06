@@ -70,7 +70,7 @@ const Navbar = () => {
         icon={<AiOutlineMenu />}
       />
       <div className="flex">
-        <NavButton
+        {/* <NavButton
           title="Cart"
           customFunc={() => dispatch(handleClick("cart"))}
           color={currentColor}
@@ -82,7 +82,7 @@ const Navbar = () => {
           customFunc={() => dispatch(handleClick("chat"))}
           color={currentColor}
           icon={<BsChatLeft />}
-        />
+        /> */}
         <NavButton
           title="Notification"
           dotColor="rgb(254, 201, 15)"
@@ -101,7 +101,7 @@ const Navbar = () => {
               alt="user-profile"
             />
             <p>
-              <span className="text-gray-400 text-14">Hi,</span>{" "}
+              <span className="text-gray-400 text-14">Xin chào,</span>{" "}
               <span className="text-gray-400 font-bold ml-1 text-14">
                 {fullName}
               </span>

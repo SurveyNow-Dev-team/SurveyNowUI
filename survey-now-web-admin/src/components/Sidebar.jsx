@@ -2,9 +2,12 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setActiveMenu } from "../store/slices/state.slice";
 import { Link, NavLink } from "react-router-dom";
+import Avatar from "@mui/material/Avatar";
 import { SiShopware } from "react-icons/si";
 import { MdOutlineCancel } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
+
+import Logo from "../assets/images/transparent-logo.png";
 
 import { links } from "../data/dummy";
 
@@ -35,14 +38,19 @@ const Sidebar = () => {
               onClick={handleCloseSideBar}
               className="items-center gap-3 ml-3 mt-4 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900"
             >
-              <SiShopware /> <span>Shoppy</span>
+              {/* <Avatar
+                sx={{ my: 2, bgcolor: "white", width: 40, height: 40 }}
+                alt="SurveyNow Logo"
+                src={Logo}
+              ></Avatar> */}
+              <span style={{ color: "#00B14F" }}>SurveyNow</span>
             </Link>
             <TooltipComponent content="Menu" position="BottomCenter">
               <button
                 type="button"
                 onClick={() => dispatch(setActiveMenu(!activeMenu))}
                 style={{ color: currentColor }}
-                className="text-xl rounded-full p-3 hover:bg-light-gray mt-4 block md:hidden"
+                className="text-xl rounded-full p-3 hover:bg-light-gray mt-4 block"
               >
                 <MdOutlineCancel />
               </button>

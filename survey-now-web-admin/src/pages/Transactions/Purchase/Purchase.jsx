@@ -7,56 +7,66 @@ import { Header } from "../../../components";
 
 const columns = [
   {
-    field: "id",
-    headerName: "ID",
-    minWidth: 100,
-    headerAlign: "center",
-    align: "center",
-  },
-  {
     field: "paymentMethod",
-    headerName: "Method",
-    minWidth: 100,
+    headerName: "Phương thức",
     headerAlign: "center",
+    flex: 2,
     align: "center",
   },
   {
     field: "point",
-    headerName: "Point",
+    headerName: "Điểm",
     type: "number",
-    minWidth: 100,
     headerAlign: "center",
+    flex: 1,
     align: "center",
   },
   {
     field: "amount",
-    headerName: "Amount",
+    headerName: "Tiền",
     headerAlign: "center",
-    minWidth: 150,
+    minWidth: 80,
+    flex: 2,
     align: "center",
   },
   {
     field: "date",
-    headerName: "Date",
+    headerName: "Ngày",
     headerAlign: "center",
-    minWidth: 200,
+    minWidth: 160,
+    flex: 4,
+    align: "center",
+  },
+  {
+    field: "sourceAccount",
+    headerName: "Tài khoản nguồn",
+    headerAlign: "center",
+    flex: 3,
+    align: "center",
+  },
+  {
+    field: "destinationAccount",
+    headerName: "Tài khoản đích",
+    headerAlign: "center",
+    flex: 3,
+    align: "center",
+  },
+  {
+    field: "purchaseCode",
+    headerName: "Mã giao dịch",
+    headerAlign: "center",
+    flex: 2,
     align: "center",
   },
   {
     field: "status",
-    headerName: "Status",
-    minWidth: 100,
+    headerName: "Trạng thái",
     headerAlign: "center",
     align: "center",
-    renderCell: (params) => <Chip label={params.value} color="warning" />,
-  },
-  {
-    field: "detail",
-    headerName: "Detail",
-    minWidth: 100,
-    headerAlign: "center",
-    align: "center",
-  },
+    minHeight: 100,
+    flex: 2,
+    renderCell: (params) => <Chip label={params.value === "Pending" ? "Đang chờ" : ""} color="warning" />,
+  }
 ];
 
 export default function Purchase() {
@@ -76,9 +86,9 @@ export default function Purchase() {
   return (
     <div className="mx-4 md:m-10 mt-5 p-6 md:p-6 bg-white rounded-3xl" >
     {/* <div className="m-2 md:m-10 mt-10 p-2 md:p-10 bg-white rounded-3xl"> */}
-      <Header title="Pending Transaction" category="" />
+      <Header title="Yêu cầu mua điểm" category="" />
       {loading ? (
-        <p>Loading data...</p>
+        <p>Tải yêu cầu...</p>
       ) : (
         <div style={{ minHeight: 400, width: "100%" }}>
           <div style={{ display: "block", width: "100%" }}>
@@ -89,8 +99,7 @@ export default function Purchase() {
                 point: transaction.point,
                 amount: `${transaction.amount} ${transaction.currency}`,
                 date: transaction.date,
-                status: transaction.status,
-                detail: `Detail`,
+                status: transaction.status
               }))}
               columns={columns}
               initialState={{

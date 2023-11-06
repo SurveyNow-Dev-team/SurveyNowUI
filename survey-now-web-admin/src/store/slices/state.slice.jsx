@@ -6,7 +6,7 @@ const initialState = {
   userProfile: false,
   notification: false,
   screenSize: undefined,
-  currentColor: '#03C9D7',
+  currentColor: '#00B14F',
   currentMode: 'Light',
   themeSettings: false,
   activeMenu: true,

@@ -7,56 +7,66 @@ import { Header } from "../../../components";
 
 const columns = [
   {
-    field: "id",
-    headerName: "ID",
-    minWidth: 100,
-    headerAlign: "center",
-    align: "center",
-  },
-  {
     field: "paymentMethod",
-    headerName: "Method",
-    minWidth: 100,
+    headerName: "Phương thức",
     headerAlign: "center",
+    flex: 2,
     align: "center",
   },
   {
     field: "point",
-    headerName: "Point",
+    headerName: "Điểm",
     type: "number",
-    minWidth: 130,
     headerAlign: "center",
+    flex: 1,
     align: "center",
   },
   {
     field: "amount",
-    headerName: "Amount",
+    headerName: "Tiền",
     headerAlign: "center",
-    minWidth: 150,
+    minWidth: 80,
+    flex: 2,
     align: "center",
   },
   {
     field: "date",
-    headerName: "Date",
+    headerName: "Ngày",
     headerAlign: "center",
-    minWidth: 200,
+    minWidth: 160,
+    flex: 4,
+    align: "center",
+  },
+  {
+    field: "sourceAccount",
+    headerName: "Tài khoản nguồn",
+    headerAlign: "center",
+    flex: 3,
+    align: "center",
+  },
+  {
+    field: "destinationAccount",
+    headerName: "Tài khoản đích",
+    headerAlign: "center",
+    flex: 3,
+    align: "center",
+  },
+  {
+    field: "Mã giao dịch",
+    headerName: "Purchase Code",
+    headerAlign: "center",
+    flex: 2,
     align: "center",
   },
   {
     field: "status",
-    headerName: "Status",
-    minWidth: 130,
+    headerName: "Trạng thái",
     headerAlign: "center",
     align: "center",
-    renderCell: (params) => <Chip label={params.value} color="warning" />,
-  },
-  {
-    field: "detail",
-    headerName: "Detail",
-    minWidth: 130,
-    headerAlign: "center",
-    align: "center",
-  },
+    minHeight: 100,
+    flex: 2,
+    renderCell: (params) => <Chip label={params.value === "Pending" ? "Đang chờ" : ""} color="warning" />,
+  }
 ];
 
 export default function Redeem() {
@@ -74,9 +84,9 @@ export default function Redeem() {
   }, [page, size]);
 
   return (
-    <div className="mx-10 md:m-8 mt-5 p-2 md:p-5 bg-white rounded-3xl" style={{width: "100%"}}>
-    {/* <div className="m-2 md:m-10 mt- p-2 md:p-10 bg-white rounded-3xl"> */}
-      <Header title="Redeem Transaction" category="" />
+    <div className="mx-4 md:m-10 mt-5 p-6 md:p-6 bg-white rounded-3xl">
+      {/* <div className="m-2 md:m-10 mt- p-2 md:p-10 bg-white rounded-3xl"> */}
+      <Header title="Yêu cầu đổi điểm" category="" />
       {loading ? (
         <p>Loading data...</p>
       ) : (
@@ -89,8 +99,9 @@ export default function Redeem() {
                 point: transaction.point,
                 amount: `${transaction.amount} ${transaction.currency}`,
                 date: transaction.date,
-                status: transaction.status,
-                detail: `Detail`,
+                sourceAccount: transaction.sourceAccount,
+                destinationAccount: transaction.destinationAccount,
+                status: transaction.status
               }))}
               columns={columns}
               initialState={{
