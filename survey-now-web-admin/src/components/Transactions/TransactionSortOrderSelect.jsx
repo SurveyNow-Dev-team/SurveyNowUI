@@ -12,7 +12,7 @@ export default function TransactionSortOrderSelect({
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Sort Order</InputLabel>
+        <InputLabel id="demo-simple-select-label">Sắp xếp</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
@@ -20,10 +20,10 @@ export default function TransactionSortOrderSelect({
           label="Sort Order"
           onChange={handleSortOrderChange}
         >
-          <MenuItem value={"DateDescending"}>Date Descending</MenuItem>
-          <MenuItem value={"DateAscending"}>Date Ascending</MenuItem>
-          <MenuItem value={"AmountDescending"}>Point Descending</MenuItem>
-          <MenuItem value={"AmountAscending"}>Point Ascending</MenuItem>
+          <MenuItem value={"DateDescending"}>Mới - Cũ</MenuItem>
+          <MenuItem value={"DateAscending"}>Cũ - Mới</MenuItem>
+          <MenuItem value={"AmountDescending"}>Tiền giảm dần</MenuItem>
+          <MenuItem value={"AmountAscending"}>Tiền tăng dần</MenuItem>
         </Select>
       </FormControl>
     </Box>

@@ -9,7 +9,7 @@ export default function TransactionTypeSelect({ type, handleTypeChange }) {
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Transaction Type</InputLabel>
+        <InputLabel id="demo-simple-select-label">Loại Giao Dịch</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
@@ -17,10 +17,10 @@ export default function TransactionTypeSelect({ type, handleTypeChange }) {
           label="Transaction Type"
           onChange={handleTypeChange}
         >
-          <MenuItem value={"All"}>All</MenuItem>
-          <MenuItem value={"PurchasePoint"}>Purchase Point</MenuItem>
-          <MenuItem value={"RedeemGift"}>Redeem Gift</MenuItem>
-          <MenuItem value={"RefundMoney"}>Refund Money</MenuItem>
+          <MenuItem value={"All"}>Tất cả</MenuItem>
+          <MenuItem value={"PurchasePoint"}>Nạp điểm</MenuItem>
+          <MenuItem value={"RedeemGift"}>Đổi quà</MenuItem>
+          <MenuItem value={"RefundMoney"}>Hoàn tiền</MenuItem>
         </Select>
       </FormControl>
     </Box>
