@@ -13,11 +13,12 @@ export default function TransactionDurationPicker({
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={["DateRangePicker", "DateRangePicker"]}>
-        <DemoItem label="Duration" component="DateRangePicker">
+        <DemoItem label="Thời Gian" component="DateRangePicker">
           <DateRangePicker
             format="DD/MM/YYYY"
             value={duration}
             onChange={(e) => handleDurationChange(e)}
+            calendars={1}
           />
         </DemoItem>
       </DemoContainer>

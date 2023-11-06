@@ -21,35 +21,66 @@ function TransactionHistory() {
   const [sortOrder, setSortOrder] = useState("DateDescending");
 
   const handleTypeFilterChange = (event) => {
+    setPage(0);
     handleTypeChange(
       setTransactionType,
       setData,
       setLoading,
       event,
       transactionStatus,
-      duration
+      duration,
+      sortOrder,
+      page,
+      size,
+      setTotalRecord
     );
   };
 
   function handleStatusFilterChange(event) {
+    setPage(0);
     handleStatusChange(
       setTransactionStatus,
       setData,
       setLoading,
       event,
       transactionType,
-      duration
+      duration,
+      sortOrder,
+      page,
+      size,
+      setTotalRecord
     );
   }
 
   const handleDurationFilterChange = (event) => {
+    setPage(0);
     handleDurationChange(
       setDuration,
       setData,
       setLoading,
       event,
       transactionType,
-      transactionStatus
+      transactionStatus,
+      sortOrder,
+      page,
+      size,
+      setTotalRecord
+    );
+  };
+
+  const handleSortOrderFilterChange = (event) => {
+    setPage(0);
+    handleSortOrderChange(
+      setSortOrder,
+      setData,
+      setLoading,
+      event,
+      transactionType,
+      transactionStatus,
+      duration,
+      page,
+      size,
+      setTotalRecord
     );
   };
 
@@ -57,9 +88,10 @@ function TransactionHistory() {
     fetchData(
       setData,
       setLoading,
-      "All",
-      "All",
-      ["", ""],
+      transactionType,
+      transactionStatus,
+      duration,
+      sortOrder,
       page,
       size,
       setTotalRecord
@@ -68,19 +100,34 @@ function TransactionHistory() {
 
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
-      <Header category="Page" title="Transactions History" />
-      <TransactionTypeSelect
-        type={transactionType}
-        handleTypeChange={handleTypeFilterChange}
-      />
-      <TransactionStatusSelect
-        status={transactionStatus}
-        handleStatusChange={handleStatusFilterChange}
-      />
-      <TransactionDurationPicker
-        duration={duration}
-        handleDurationChange={handleDurationFilterChange}
-      />
+      <Header category="Trang" title="Lịch Sử Giao Dịch" />
+      <div className="filter-container">
+        <div>
+          <TransactionTypeSelect
+            type={transactionType}
+            handleTypeChange={handleTypeFilterChange}
+          />
+        </div>
+        <div>
+          <TransactionStatusSelect
+            status={transactionStatus}
+            handleStatusChange={handleStatusFilterChange}
+          />
+        </div>
+        <div>
+          <TransactionDurationPicker
+            duration={duration}
+            handleDurationChange={handleDurationFilterChange}
+          />{" "}
+        </div>
+        <div>
+          <TransactionSortOrderSelect
+            sortOrder={sortOrder}
+            handleSortOrderChange={handleSortOrderFilterChange}
+          />
+        </div>
+      </div>
+
       {loading ? (
         <p>Loading data...</p>
       ) : (
@@ -103,11 +150,25 @@ const handleTypeChange = (
   setLoading,
   event,
   transactionStatus,
-  duration
+  duration,
+  sortOrder,
+  page,
+  size,
+  setTotalRecord
 ) => {
   const value = event.target.value;
   setTransactionType(value === "All" ? null : value);
-  fetchData(setData, setLoading, value, transactionStatus, duration);
+  fetchData(
+    setData,
+    setLoading,
+    value,
+    transactionStatus,
+    duration,
+    sortOrder,
+    page,
+    size,
+    setTotalRecord
+  );
 };
 
 const handleStatusChange = (
@@ -116,11 +177,25 @@ const handleStatusChange = (
   setLoading,
   event,
   transactionType,
-  duration
+  duration,
+  sortOrder,
+  page,
+  size,
+  setTotalRecord
 ) => {
   const value = event.target.value;
   setTransactionStatus(value === "All" ? null : value);
-  fetchData(setData, setLoading, transactionType, value, duration);
+  fetchData(
+    setData,
+    setLoading,
+    transactionType,
+    value,
+    duration,
+    sortOrder,
+    page,
+    size,
+    setTotalRecord
+  );
 };
 
 const handleDurationChange = (
@@ -129,11 +204,53 @@ const handleDurationChange = (
   setLoading,
   event,
   transactionType,
-  transactionStatus
+  transactionStatus,
+  sortOrder,
+  page,
+  size,
+  setTotalRecord
 ) => {
   const value = event;
   setDuration(value);
-  fetchData(setData, setLoading, transactionType, transactionStatus, value);
+  fetchData(
+    setData,
+    setLoading,
+    transactionType,
+    transactionStatus,
+    value,
+    sortOrder,
+    page,
+    size,
+    setTotalRecord
+  );
+};
+
+const handleSortOrderChange = (
+  setSortOrder,
+  setData,
+  setLoading,
+  event,
+  transactionType,
+  transactionStatus,
+  duration,
+  page,
+  size,
+  setTotalRecord
+) => {
+  console.log(event.target);
+  const value = event.target.value;
+  setSortOrder(value === "DateDescending" ? null : value);
+  fetchData(
+    setData,
+    setLoading,
+    transactionType,
+    transactionStatus,
+    duration,
+    value,
+    page,
+    size,
+    setTotalRecord
+  );
 };
 
 const fetchData = async (
@@ -142,23 +259,36 @@ const fetchData = async (
   typeFilter,
   statusFilter,
   duration,
+  sortOrder,
   page,
   size,
   setTotalRecord
 ) => {
   try {
+    const type = typeFilter === "All" ? null : typeFilter;
+    const status = statusFilter === "All" ? null : statusFilter;
+    var fromDate = duration[0] === "" ? null : duration[0].format("DD/MM/YYYY");
+    var toDate = duration[1] === "" ? null : duration[1].format("DD/MM/YYYY");
+    if (fromDate === toDate) {
+      fromDate = null;
+      toDate = null;
+    }
+    const sort = sortOrder === "DateDescending" ? null : sortOrder;
+    const pageNum = page !== undefined ? page + 1 : 0;
+    const pageSize = size || 10;
     const response = await getTransactionHistory(
-      typeFilter === "All" ? null : typeFilter,
-      statusFilter === "All" ? null : statusFilter,
-      duration[0] === "" ? null : duration[0].format("DD/MM/YYYY"),
-      duration[1] === "" ? null : duration[1].format("DD/MM/YYYY"),
-      null,
-      page !== undefined ? page + 1 : 0,
-      size || 10
+      type,
+      status,
+      fromDate,
+      toDate,
+      sort,
+      pageNum,
+      pageSize
     );
     setData(response.results);
     setTotalRecord(response.totalRecords || 0);
     setLoading(false);
+    console.log(`Current Page: ${page}; Size: ${size}`);
   } catch (error) {
     console.error("Error fetching data:", error);
     setLoading(false);

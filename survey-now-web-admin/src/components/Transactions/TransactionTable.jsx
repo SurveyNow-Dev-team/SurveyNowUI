@@ -11,21 +11,21 @@ const columns = [
   },
   {
     field: "transactionType",
-    headerName: "Transaction Type",
+    headerName: "Loại Giao Dịch",
     width: 200,
     headerAlign: "center",
     align: "center",
   },
   {
     field: "paymentMethod",
-    headerName: "Payment Method",
+    headerName: "Phương Thức",
     width: 150,
     headerAlign: "center",
     align: "center",
   },
   {
     field: "point",
-    headerName: "Point Amount",
+    headerName: "Điểm",
     type: "number",
     width: 150,
     headerAlign: "center",
@@ -33,7 +33,7 @@ const columns = [
   },
   {
     field: "amount",
-    headerName: "Money Amount",
+    headerName: "Tiền",
     type: "number",
     width: 150,
     headerAlign: "center",
@@ -41,14 +41,14 @@ const columns = [
   },
   {
     field: "date",
-    headerName: "Date",
+    headerName: "Thời Gian",
     width: 200,
     headerAlign: "center",
     align: "center",
   },
   {
     field: "status",
-    headerName: "Status",
+    headerName: "Trạng Thái",
     width: 150,
     headerAlign: "center",
     headerAlign: "center",
@@ -64,7 +64,6 @@ export default function TransactionTable({
   setPage,
   setSize,
 }) {
-  console.log(`Page sdv ${page}`);
   return (
     <div style={{ height: 400, width: "100%" }}>
       <DataGrid
@@ -79,7 +78,6 @@ export default function TransactionTable({
         paginationMode="server"
         paginationModel={{ page: page || 0, pageSize: size || 0 }}
         onPaginationModelChange={(newPage) => {
-          console.log(`Page ${newPage.page}`);
           setPage(newPage.page);
           setSize(newPage.pageSize);
         }}

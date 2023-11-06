@@ -13,7 +13,7 @@ export default function TransactionStatusSelect({
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">
-          Transaction Status
+          Trạng Thái Giao Dịch
         </InputLabel>
         <Select
           labelId="demo-simple-select-label"
@@ -22,11 +22,11 @@ export default function TransactionStatusSelect({
           label="Transaction Status"
           onChange={handleStatusChange}
         >
-          <MenuItem value={"All"}>All</MenuItem>
-          <MenuItem value={"Success"}>Success</MenuItem>
-          <MenuItem value={"Fail"}>Fail</MenuItem>
-          <MenuItem value={"Pending"}>Pending</MenuItem>
-          <MenuItem value={"Cancel"}>Cancel</MenuItem>
+          <MenuItem value={"All"}>Tất cả</MenuItem>
+          <MenuItem value={"Success"}>Thành công</MenuItem>
+          <MenuItem value={"Fail"}>Thất bại</MenuItem>
+          <MenuItem value={"Pending"}>Chờ xử lý</MenuItem>
+          <MenuItem value={"Cancel"}>Đã hủy</MenuItem>
         </Select>
       </FormControl>
     </Box>
