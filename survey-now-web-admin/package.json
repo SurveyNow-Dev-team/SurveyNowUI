@@ -1,6 +1,4 @@
 {
-  "homepage": "http//SurveyNow-Dev-team.github.io/SurveyNowUI",
-  "name": "project_syncfusion_dashboard",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -38,8 +36,6 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -70,7 +66,6 @@
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
-    "gh-pages": "^6.0.0",
     "postcss": "^8.4.6",
     "tailwindcss": "^3.0.19"
   }
