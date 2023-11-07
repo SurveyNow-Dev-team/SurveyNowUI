@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "http://survey-now.us-east-1.elasticbeanstalk.com/";
+const url = "https://survey-now-fptu.somee.com/";
 
 const instance = axios.create({
   baseURL: url,
