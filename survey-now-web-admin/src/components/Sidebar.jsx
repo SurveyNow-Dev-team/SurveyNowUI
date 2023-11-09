@@ -17,11 +17,17 @@ const Sidebar = () => {
   const activeMenu = useSelector((state) => state.state.activeMenu);
   const screenSize = useSelector((state) => state.state.screenSize);
 
+
+  // const handleCloseSideBar = () => {
+  //   if (activeMenu !== undefined && screenSize <= 900) {
+  //     dispatch(setActiveMenu(false));
+  //   }
+  // };
+
   const handleCloseSideBar = () => {
-    if (activeMenu !== undefined && screenSize <= 900) {
-      dispatch(setActiveMenu(false));
-    }
-  };
+    setActiveMenu(false);
+  }
+
 
   const activeLink =
     "flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg  text-white  text-md m-2";
@@ -32,6 +38,7 @@ const Sidebar = () => {
     <div className="ml-3 h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10">
       {activeMenu && (
         <>
+        <div className="main-content-scaled">
           <div className="flex justify-between items-center">
             <Link
               to="/"
@@ -43,7 +50,7 @@ const Sidebar = () => {
                 alt="SurveyNow Logo"
                 src={Logo}
               ></Avatar> */}
-              <span style={{ color: "#00B14F" }}>SurveyNow</span>
+              <span style={{ color: "#00B14F" }}>Survey Now</span>
             </Link>
             <TooltipComponent content="Menu" position="BottomCenter">
               <button
@@ -82,6 +89,7 @@ const Sidebar = () => {
                 ))}
               </div>
             ))}
+          </div>
           </div>
         </>
       )}

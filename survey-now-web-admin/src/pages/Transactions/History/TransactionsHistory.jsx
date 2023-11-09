@@ -8,6 +8,7 @@ import TransactionStatusSelect from "../../../components/Transactions/Transactio
 import TransactionDurationPicker from "../../../components/Transactions/TransactionDurationPicker";
 import TransactionSortOrderSelect from "../../../components/Transactions/TransactionSortOrderSelect";
 import dayjs from "dayjs";
+import { Col, Row } from "antd";
 
 function TransactionHistory() {
   const [data, setData] = useState([]);
@@ -99,6 +100,9 @@ function TransactionHistory() {
   }, [page, size]);
 
   return (
+    <Row>
+      <Col span={5} className="col-3"></Col>
+      <Col span={19} className="col-18">
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
       <Header category="Trang" title="Lịch Sử Giao Dịch" />
       <div className="filter-container">
@@ -140,7 +144,11 @@ function TransactionHistory() {
           setSize={setSize}
         />
       )}
+      
     </div>
+    </Col>
+      <Col span={0} className="col-3"></Col>
+    </Row>
   );
 }
 

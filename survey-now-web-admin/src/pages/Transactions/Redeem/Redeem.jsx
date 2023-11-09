@@ -1,6 +1,7 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Chip } from "@mui/material";
+import { Col, Row } from "antd";
 
 import { getPendingRedeem } from "../../../apis/transaction/purchase";
 import { Header } from "../../../components";
@@ -84,6 +85,9 @@ export default function Redeem() {
   }, [page, size]);
 
   return (
+    <Row>
+      <Col span={5} className="col-3"></Col>
+      <Col span={19} className="col-18">
     <div className="mx-4 md:m-10 mt-5 p-6 md:p-6 bg-white rounded-3xl">
       {/* <div className="m-2 md:m-10 mt- p-2 md:p-10 bg-white rounded-3xl"> */}
       <Header title="Yêu cầu đổi điểm" category="" />
@@ -126,6 +130,9 @@ export default function Redeem() {
         </div>
       )}
     </div>
+    </Col>
+    <Col span={0} className="col-3"></Col>
+  </Row>
   );
 }
 

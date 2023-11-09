@@ -3,7 +3,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Chip } from "@mui/material";
 import { Col, Row } from "antd";
 
-import { getPendingPurchase } from "../../../apis/transaction/purchase";
+import { getAllUsers } from "../../../apis/users";
+import { getUserById } from "../../../apis/users";
 import { Header } from "../../../components";
 
 const columns = [
@@ -75,7 +76,7 @@ const columns = [
   },
 ];
 
-export default function Purchase() {
+export default function User() {
   const [page, setPage] = React.useState(0);
   const [size, setSize] = React.useState(5);
   const [data, setData] = React.useState([]);
@@ -88,6 +89,22 @@ export default function Purchase() {
     console.log(`Size: ${size}`);
     fetchData(page, size, setData, setMessage, setTotalRecord, setLoading);
   }, [page, size]);
+  ``
+
+  const fetchGetUserByIdData = async () => {
+    try {
+      // Fetch data from another API
+      const additionalData = await getUserById(
+        page !== undefined ? page + 1 : 0,
+        size || 5
+      );
+
+      // Process and use additional data as needed
+      console.log("Additional Data:", additionalData);
+    } catch (error) {
+      console.error("Error fetching additional data", error);
+    }
+  };
 
   return (
     <Row>
@@ -95,15 +112,15 @@ export default function Purchase() {
       <Col span={19} className="col-18">
         <div className="mx-4 md:m-10 mt-5 p-6 md:p-6 bg-white rounded-3xl">
           {/* <div className="m-2 md:m-10 mt-10 p-2 md:p-10 bg-white rounded-3xl"> */}
-          <Header title="Yêu cầu mua điểm" category="" />
+          <Header title="Người dùng" category="" />
           {loading ? (
             <p>Tải yêu cầu...</p>
           ) : (
             <div style={{ minHeight: 400, width: "100%" }}>
               <div style={{ display: "block", width: "100%" }}>
                 <DataGrid
-                  rows={data.map((transaction) => ({
-                    id: transaction.id,
+                  rows={data.map((users) => ({
+                    id: users.id,
                     paymentMethod: transaction.paymentMethod,
                     point: transaction.point,
                     amount: `${transaction.amount} ${transaction.currency}`,
@@ -150,7 +167,7 @@ const fetchData = async (
 ) => {
   console.log("Call fetch function");
   try {
-    const data = await getPendingPurchase(
+    const data = await getAllUsers(
       page !== undefined ? page + 1 : 0,
       size || 5
     );
