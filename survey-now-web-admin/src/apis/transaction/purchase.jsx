@@ -40,12 +40,26 @@ export const acceptPendingPurchase = async ({
   return response.data;
 };
 
-export const cancelPendingPurchase = async ({
-  id
-}) => {
+export const cancelPendingPurchase = async ({ id }) => {
   const response = await instance.put(
     `/api/v1/transaction/point-purchase/${id}/cancel`,
-    { }
+    {}
+  );
+  return response.data;
+};
+
+export const acceptPendingRedeem = async ({ id, momoTransactionId }) => {
+  const response = await instance.put(
+    `/api/v1/transaction/point-redeem/${id}/process`,
+    { momoTransactionId: momoTransactionId }
+  );
+  return response.data;
+};
+
+export const cancelPendingRedeem = async ({ id }) => {
+  const response = await instance.put(
+    `/api/v1/transaction/point-redeem/${id}/cancel`,
+    {}
   );
   return response.data;
 };

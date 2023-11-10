@@ -5,9 +5,10 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { Alert } from "@mui/material";
 
-import { cancelPendingPurchase } from "../../../apis/transaction/purchase";
+
+import { Alert } from "@mui/material";
+import { cancelPendingRedeem } from "../../../apis/transaction/purchase";
 
 export default function ConfirmCancel({
   state,
@@ -27,7 +28,7 @@ export default function ConfirmCancel({
     try {
       event.preventDefault();
 
-      const data = await cancelPendingPurchase({
+      const data = await cancelPendingRedeem({
         id: state.transactionId,
       });
 

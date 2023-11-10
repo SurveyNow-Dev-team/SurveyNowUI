@@ -9,12 +9,22 @@ import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 
+import AcceptRedeem from "../../../components/Transactions/AcceptRedeem/AcceptRedeem";
+import ConfirmCancel from "../../../components/Transactions/CancelRedeem/Confirm";
+
 import { useSelector } from "react-redux/es/hooks/useSelector";
 
 import { getPendingRedeem } from "../../../apis/transaction/purchase";
 import { Header } from "../../../components";
 
-const columns = [
+const columns = (handleAcceptClick, handleCancelClick) => [
+  {
+    field: "fullName",
+    headerName: "Người dùng",
+    headerAlign: "center",
+    flex: 2,
+    align: "center",
+  },
   {
     field: "paymentMethod",
     headerName: "Phương thức",
@@ -72,7 +82,7 @@ const columns = [
     headerName: "Trạng thái",
     headerAlign: "center",
     align: "center",
-    minHeight: 100,
+    minWidth: 100,
     flex: 2,
     renderCell: (params) => (
       <Chip
@@ -81,19 +91,26 @@ const columns = [
       />
     ),
   },
+
   {
     field: "id",
     headerName: "",
     headerAlign: "center",
     align: "center",
-    minHeight: 100,
+    minWidth: 100,
     flex: 1.5,
     renderCell: (params) => (
       <Stack direction="row" spacing={0.5}>
-        <IconButton aria-label="Chấp nhận">
+        <IconButton
+          aria-label="Chấp nhận"
+          onClick={() => handleAcceptClick(params.value)}
+        >
           <CheckCircleIcon color="success" />
         </IconButton>
-        <IconButton aria-label="Từ chối">
+        <IconButton
+          aria-label="Từ chối"
+          onClick={() => handleCancelClick(params.value)}
+        >
           <CancelSharpIcon sx={{ color: red[900] }} />
         </IconButton>
       </Stack>
@@ -102,7 +119,7 @@ const columns = [
 ];
 
 export default function Redeem() {
-const currentColor = useSelector((state) => state.state.currentColor);
+  const currentColor = useSelector((state) => state.state.currentColor);
 
   const [page, setPage] = React.useState(0);
   const [size, setSize] = React.useState(5);
@@ -110,18 +127,51 @@ const currentColor = useSelector((state) => state.state.currentColor);
   const [message, setMessage] = React.useState("");
   const [totalRecord, setTotalRecord] = React.useState(0);
   const [loading, setLoading] = React.useState(true);
+  const [reload, setReload] = React.useState(true);
+
+  //Purchase modal
+  const [acceptState, setAcceptState] = React.useState({
+    open: false,
+    transactionId: 0,
+  });
+  const [cancelState, setCancelState] = React.useState({
+    open: false,
+    transactionId: 0,
+  });
+
+  const handleAcceptClick = (id) => {
+    setAcceptState((values) => ({ ...values, open: true, transactionId: id }));
+  };
+
+  const handleCancelClick = (id) => {
+    setCancelState((values) => ({ ...values, open: true, transactionId: id }));
+  };
 
   React.useEffect(() => {
     console.log(`Page: ${page}`);
     console.log(`Size: ${size}`);
     setLoading(true);
     fetchData(page, size, setData, setMessage, setTotalRecord, setLoading);
-  }, [page, size]);
+  }, [page, size, reload]);
 
   return (
     <div className="mx-4 md:m-10 mt-5 p-6 md:p-6 bg-white rounded-3xl">
       {/* <div className="m-2 md:m-10 mt- p-2 md:p-10 bg-white rounded-3xl"> */}
       <Header title="Yêu cầu đổi điểm" category="" />
+      <AcceptRedeem
+        state={acceptState}
+        setState={setAcceptState}
+        setPage={setPage}
+        reload={reload}
+        setReload={setReload}
+      />
+      <ConfirmCancel
+        state={cancelState}
+        setState={setCancelState}
+        setPage={setPage}
+        reload={reload}
+        setReload={setReload}
+      />
       {loading ? (
         <Box
           sx={{
@@ -130,7 +180,7 @@ const currentColor = useSelector((state) => state.state.currentColor);
             alignItems: "center",
           }}
         >
-          <CircularProgress sx={{color: currentColor}} />
+          <CircularProgress sx={{ color: currentColor }} />
         </Box>
       ) : (
         <div style={{ minHeight: 400, width: "100%" }}>
@@ -138,16 +188,15 @@ const currentColor = useSelector((state) => state.state.currentColor);
             <DataGrid
               rows={data.map((transaction) => ({
                 id: transaction.id,
+                fullName: transaction.fullName,
                 paymentMethod: transaction.paymentMethod,
                 point: transaction.point,
                 amount: `${transaction.amount} ${transaction.currency}`,
                 date: transaction.date,
-                sourceAccount: transaction.sourceAccount,
-                destinationAccount: transaction.destinationAccount,
                 status: transaction.status,
-                purchaseCode: transaction.purchaseCode
+                purchaseCode: transaction.purchaseCode,
               }))}
-              columns={columns}
+              columns={columns(handleAcceptClick, handleCancelClick)}
               initialState={{
                 pagination: {
                   paginationModel: { page: page, pageSize: size },

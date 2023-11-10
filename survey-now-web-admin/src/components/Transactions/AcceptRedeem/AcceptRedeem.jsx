@@ -7,17 +7,13 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
-import Grow from "@mui/material/Grow";
-
 import { Alert } from "@mui/material";
-import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
-import Snackbar from "@mui/material/Snackbar";
 
-import { acceptPendingPurchase } from "../../../apis/transaction/purchase";
+import { acceptPendingRedeem } from "../../../apis/transaction/purchase";
 import { useState } from "react";
 
-export default function AcceptPurchaseModal({
+export default function AcceptRedeem({
   state,
   setState,
   setPage,
@@ -26,22 +22,18 @@ export default function AcceptPurchaseModal({
 }) {
   const handleClose = () => {
     setInputs({
-      transactionId: "",
-      sourceAccount: "",
+      momoTransactionId: "",
     });
     setTransactionError("");
-    setSourceAccountError("");
     setMessage("");
     setState({ ...state, open: false });
   };
 
   const handleUpdate = () => {
     setInputs({
-      transactionId: "",
-      sourceAccount: "",
+      momoTransactionId: "",
     });
     setTransactionError("");
-    setSourceAccountError("");
     setMessage("");
     setState({ ...state, open: false });
     setPage(1);
@@ -49,14 +41,11 @@ export default function AcceptPurchaseModal({
   };
 
   const [transactionError, setTransactionError] = useState("");
-  const [sourceAccountError, setSourceAccountError] = useState("");
   const [message, setMessage] = useState("");
-  const [openSnakeBar, setOpenSnakeBar] = useState(false);
   const [severity, setSeverity] = useState("");
 
   const [inputs, setInputs] = useState({
-    transactionId: "",
-    sourceAccount: "",
+    momoTransactionId: "",
   });
 
   const handleInputChange = (e) => {
@@ -69,33 +58,26 @@ export default function AcceptPurchaseModal({
     try {
       event.preventDefault();
 
-      if (inputs.transactionId.trim() === "") {
-        setSourceAccountError(`Tài khoản nguồn không được để trống. `);
-      } else {
-        setSourceAccountError("");
-      }
-
-      if (inputs.transactionId.trim() === "") {
+      if (inputs.momoTransactionId.trim() === "") {
         setTransactionError(`Mã giao dịch không được để trống.`);
       } else {
         setTransactionError("");
       }
 
-      if (transactionError !== "" || sourceAccountError !== "") {
+      if (transactionError !== "") {
         setMessage("");
         return;
       }
 
-      const data = await acceptPendingPurchase({
+      const data = await acceptPendingRedeem({
         id: state.transactionId,
-        eWalletTransactionId: inputs.transactionId,
-        sourceAccount: inputs.sourceAccount,
+        momoTransactionId: inputs.momoTransactionId,
       });
 
       //   message = data.reposne?.data?.message || "Thành công";
       handleUpdate();
     } catch (error) {
-      console.log(JSON.stringify(error.response.data, null, 2));
+      // console.log(JSON.stringify(error.response.data, null, 2));
       if (error.response) {
         if (error.response.data.title) {
           console.log(error.response?.data?.title || "Undefined.");
@@ -118,7 +100,7 @@ export default function AcceptPurchaseModal({
 
   return (
     <Dialog open={state.open} onClose={handleClose}>
-      <DialogTitle>Xử lý điểm</DialogTitle>
+      <DialogTitle>Xử lý rút điểm</DialogTitle>
       <DialogContent>
         <DialogContentText>
           Nhập thông tin giao dịch để xác nhận
@@ -134,28 +116,12 @@ export default function AcceptPurchaseModal({
             margin="normal"
             required
             fullWidth
-            name="sourceAccount"
-            label="Tài khoản nguồn"
-            type="text"
-            id="sourceAccount"
-            autoComplete="Tài khoảng nguồn"
-            value={inputs.sourceAccount || ""}
-            onChange={handleInputChange}
-            error={sourceAccountError === "" ? false : true}
-            helperText={sourceAccountError}
-          />
-
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="transactionId"
+            name="momoTransactionId"
             label="Mã giao dịch"
             type="text"
-            name="transactionId"
+            id="momoTransactionId"
             autoComplete="Mã giao dịch"
-            autoFocus
-            value={inputs.transactionId || ""}
+            value={inputs.momoTransactionId || ""}
             onChange={handleInputChange}
             error={transactionError === "" ? false : true}
             helperText={transactionError}
@@ -169,42 +135,3 @@ export default function AcceptPurchaseModal({
     </Dialog>
   );
 }
-
-// const Progress = () => {
-//   return (
-//     <Box
-//       sx={{
-//         display: "flex",
-//         justifyContent: "center",
-//         alignItems: "center",
-//       }}
-//     >
-//       <CircularProgress sx={{ color: currentColor }} />
-//     </Box>
-//   );
-// };
-
-// const SnakeBar = ({ message, open, setOpen, severity }) => {
-//   const handleClose = () => {
-//     setOpen(false);
-//   };
-
-//   console.log("Call snake bar");
-
-//   return (
-//     <div>
-//       <Snackbar
-//         nchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-//         open={open}
-//         autoHideDuration={4000}
-//         TransitionComponent={Grow}
-//         onClose={handleClose}
-//         key={message}
-//       >
-//         <Alert onClose={handleClose} severity={severity} sx={{ width: "100%" }}>
-//           {message}
-//         </Alert>
-//       </Snackbar>
-//     </div>
-//   );
-// };

@@ -171,7 +171,6 @@ export default function Purchase() {
         reload={reload}
         setReload={setReload}
       />
-      {/* <AcceptModal state={acceptState} setState={setAcceptState} /> */}
       {loading ? (
         <Box
           sx={{
