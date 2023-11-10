@@ -40,6 +40,7 @@ const Navbar = () => {
   const screenSize = useSelector((state) => state.state.screenSize);
   const user = JSON.parse(localStorage.getItem("user"));
   const fullName = user.fullName;
+  const avatarUrl = user.avatarUrl;
 
   useEffect(() => {
     const handleResize = () => dispatch(setScreenSize(window.innerWidth));
@@ -97,7 +98,7 @@ const Navbar = () => {
           >
             <img
               className="rounded-full w-8 h-8"
-              src={avatar}
+              src={(avatarUrl == undefined || avatarUrl == null || avatarUrl == "") ? avatar : avatarUrl}
               alt="user-profile"
             />
             <p>

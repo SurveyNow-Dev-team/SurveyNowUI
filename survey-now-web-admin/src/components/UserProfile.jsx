@@ -14,6 +14,7 @@ const UserProfile = () => {
   const fullName = user.fullName;
   const email = user.email;
   const role = user.role;
+  const avatarUrl = user.avatarUrl;
 
   return (
     <div className="nav-item absolute right-1 top-16 bg-white dark:bg-[#42464D] p-8 rounded-lg w-96">
@@ -31,7 +32,7 @@ const UserProfile = () => {
       <div className="flex gap-5 items-center mt-6 border-color border-b-1 pb-6">
         <img
           className="rounded-full h-24 w-24"
-          src={avatar}
+          src={(avatarUrl == undefined || avatarUrl == null || avatarUrl == "") ? avatar : avatarUrl}
           alt="user-profile"
         />
         <div>

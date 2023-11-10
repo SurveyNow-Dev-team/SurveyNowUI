@@ -5,6 +5,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import CancelSharpIcon from "@mui/icons-material/CancelSharp";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { red } from "@mui/material/colors";
+import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 
@@ -49,21 +50,21 @@ const columns = [
     field: "sourceAccount",
     headerName: "Tài khoản nguồn",
     headerAlign: "center",
-    flex: 3,
+    flex: 2.5,
     align: "center",
   },
   {
     field: "destinationAccount",
     headerName: "Tài khoản đích",
     headerAlign: "center",
-    flex: 3,
+    flex: 2.5,
     align: "center",
   },
   {
-    field: "Mã giao dịch",
-    headerName: "Purchase Code",
+    field: "purchaseCode",
+    headerName: "Mã giao dịch",
     headerAlign: "center",
-    flex: 2,
+    flex: 3,
     align: "center",
   },
   {
@@ -81,15 +82,20 @@ const columns = [
     ),
   },
   {
+    field: "id",
     headerName: "",
     headerAlign: "center",
     align: "center",
     minHeight: 100,
     flex: 1.5,
     renderCell: (params) => (
-      <Stack direction="row" spacing={1}>
-        <CheckCircleIcon color="success" />
-        <CancelSharpIcon sx={{ color: red[900] }} />
+      <Stack direction="row" spacing={0.5}>
+        <IconButton aria-label="Chấp nhận">
+          <CheckCircleIcon color="success" />
+        </IconButton>
+        <IconButton aria-label="Từ chối">
+          <CancelSharpIcon sx={{ color: red[900] }} />
+        </IconButton>
       </Stack>
     ),
   },
@@ -108,6 +114,7 @@ const currentColor = useSelector((state) => state.state.currentColor);
   React.useEffect(() => {
     console.log(`Page: ${page}`);
     console.log(`Size: ${size}`);
+    setLoading(true);
     fetchData(page, size, setData, setMessage, setTotalRecord, setLoading);
   }, [page, size]);
 
@@ -138,6 +145,7 @@ const currentColor = useSelector((state) => state.state.currentColor);
                 sourceAccount: transaction.sourceAccount,
                 destinationAccount: transaction.destinationAccount,
                 status: transaction.status,
+                purchaseCode: transaction.purchaseCode
               }))}
               columns={columns}
               initialState={{
@@ -191,8 +199,8 @@ const fetchData = async (
         console.log(error.response?.data?.title || "Undefined.");
         setMessage(error.response?.data?.title || "Undefined.");
       } else {
-        console.log(error.response?.data?.Message || "Undefined.");
-        setMessage(error.response?.data?.Message || "Undefined.");
+        console.log(error.response?.data?.message || "Undefined.");
+        setMessage(error.response?.data?.message || "Undefined.");
       }
     } else {
       console.log(error.message);
