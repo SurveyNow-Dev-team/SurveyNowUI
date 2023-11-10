@@ -17,7 +17,13 @@ import Snackbar from "@mui/material/Snackbar";
 import { acceptPendingPurchase } from "../../../apis/transaction/purchase";
 import { useState } from "react";
 
-export default function AcceptPurchaseModal({ state, setState, setPage, reload, setReload}) {
+export default function AcceptPurchaseModal({
+  state,
+  setState,
+  setPage,
+  reload,
+  setReload,
+}) {
   const handleClose = () => {
     setInputs({
       transactionId: "",
@@ -26,7 +32,18 @@ export default function AcceptPurchaseModal({ state, setState, setPage, reload, 
     setTransactionError("");
     setSourceAccountError("");
     setMessage("");
-    setState({ ...state, open: false});
+    setState({ ...state, open: false });
+  };
+
+  const handleUpdate = () => {
+    setInputs({
+      transactionId: "",
+      sourceAccount: "",
+    });
+    setTransactionError("");
+    setSourceAccountError("");
+    setMessage("");
+    setState({ ...state, open: false });
     setPage(1);
     setReload(!reload);
   };
@@ -76,7 +93,7 @@ export default function AcceptPurchaseModal({ state, setState, setPage, reload, 
       });
 
       //   message = data.reposne?.data?.message || "Thành công";
-      handleClose();
+      handleUpdate();
     } catch (error) {
       console.log(JSON.stringify(error.response.data, null, 2));
       if (error.response) {
@@ -153,41 +170,41 @@ export default function AcceptPurchaseModal({ state, setState, setPage, reload, 
   );
 }
 
-const Progress = () => {
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <CircularProgress sx={{ color: currentColor }} />
-    </Box>
-  );
-};
+// const Progress = () => {
+//   return (
+//     <Box
+//       sx={{
+//         display: "flex",
+//         justifyContent: "center",
+//         alignItems: "center",
+//       }}
+//     >
+//       <CircularProgress sx={{ color: currentColor }} />
+//     </Box>
+//   );
+// };
 
-const SnakeBar = ({ message, open, setOpen, severity }) => {
-  const handleClose = () => {
-    setOpen(false);
-  };
+// const SnakeBar = ({ message, open, setOpen, severity }) => {
+//   const handleClose = () => {
+//     setOpen(false);
+//   };
 
-  console.log("Call snake bar");
+//   console.log("Call snake bar");
 
-  return (
-    <div>
-      <Snackbar
-        nchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        open={open}
-        autoHideDuration={4000}
-        TransitionComponent={Grow}
-        onClose={handleClose}
-        key={message}
-      >
-        <Alert onClose={handleClose} severity={severity} sx={{ width: "100%" }}>
-          {message}
-        </Alert>
-      </Snackbar>
-    </div>
-  );
-};
+//   return (
+//     <div>
+//       <Snackbar
+//         nchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+//         open={open}
+//         autoHideDuration={4000}
+//         TransitionComponent={Grow}
+//         onClose={handleClose}
+//         key={message}
+//       >
+//         <Alert onClose={handleClose} severity={severity} sx={{ width: "100%" }}>
+//           {message}
+//         </Alert>
+//       </Snackbar>
+//     </div>
+//   );
+// };
