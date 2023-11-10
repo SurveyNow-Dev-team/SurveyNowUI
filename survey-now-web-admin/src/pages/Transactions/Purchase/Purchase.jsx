@@ -1,9 +1,16 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Chip } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
+import CancelSharpIcon from "@mui/icons-material/CancelSharp";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { red } from "@mui/material/colors";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 
 import { getPendingPurchase } from "../../../apis/transaction/purchase";
 import { Header } from "../../../components";
+import { useSelector } from "react-redux";
 
 const columns = [
   {
@@ -65,11 +72,32 @@ const columns = [
     align: "center",
     minHeight: 100,
     flex: 2,
-    renderCell: (params) => <Chip label={params.value === "Pending" ? "Đang chờ" : ""} color="warning" />,
-  }
+    renderCell: (params) => (
+      <Chip
+        label={params.value === "Pending" ? "Đang chờ" : ""}
+        color="warning"
+      />
+    ),
+  },
+
+  {
+    headerName: "",
+    headerAlign: "center",
+    align: "center",
+    minHeight: 100,
+    flex: 1.5,
+    renderCell: (params) => (
+      <Stack direction="row" spacing={1}>
+        <CheckCircleIcon color="success" />
+        <CancelSharpIcon sx={{ color: red[900] }} />
+      </Stack>
+    ),
+  },
 ];
 
 export default function Purchase() {
+  const currentColor = useSelector((state) => state.state.currentColor);
+
   const [page, setPage] = React.useState(0);
   const [size, setSize] = React.useState(5);
   const [data, setData] = React.useState([]);
@@ -84,11 +112,19 @@ export default function Purchase() {
   }, [page, size]);
 
   return (
-    <div className="mx-4 md:m-10 mt-5 p-6 md:p-6 bg-white rounded-3xl" >
-    {/* <div className="m-2 md:m-10 mt-10 p-2 md:p-10 bg-white rounded-3xl"> */}
+    <div className="mx-4 md:m-10 mt-5 p-6 md:p-6 bg-white rounded-3xl">
+      {/* <div className="m-2 md:m-10 mt-10 p-2 md:p-10 bg-white rounded-3xl"> */}
       <Header title="Yêu cầu mua điểm" category="" />
       {loading ? (
-        <p>Tải yêu cầu...</p>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress sx={{ color: currentColor }} />
+        </Box>
       ) : (
         <div style={{ minHeight: 400, width: "100%" }}>
           <div style={{ display: "block", width: "100%" }}>
@@ -99,7 +135,7 @@ export default function Purchase() {
                 point: transaction.point,
                 amount: `${transaction.amount} ${transaction.currency}`,
                 date: transaction.date,
-                status: transaction.status
+                status: transaction.status,
               }))}
               columns={columns}
               initialState={{

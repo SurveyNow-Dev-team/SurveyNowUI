@@ -143,8 +143,8 @@ export default function Login() {
           console.log(error.response?.data?.title || "Undefined.");
           setMessage(error.response?.data?.title || "Undefined.");
         } else {
-          console.log(error.response?.data?.Message || "Undefined.");
-          setMessage(error.response?.data?.Message || "Undefined.");
+          console.log(error.response?.data?.message || "Undefined.");
+          setMessage(error.response?.data?.message || "Undefined.");
         }
       } else {
         console.log(error.message);
@@ -172,7 +172,7 @@ export default function Login() {
             src={Logo}
           ></Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Đăng nhập
           </Typography>
           <Box
             component="form"
@@ -182,7 +182,7 @@ export default function Login() {
           >
             {message && (
               <Alert variant="outlined" severity="error">
-                {`Error: ${message}`}
+                {`Lỗi: ${message}`}
               </Alert>
             )}
             <TextField
@@ -190,7 +190,7 @@ export default function Login() {
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label="Email"
               type="email"
               name="email"
               autoComplete="email"
@@ -205,7 +205,7 @@ export default function Login() {
               required
               fullWidth
               name="password"
-              label="Password"
+              label="Mật khẩu"
               type="password"
               id="password"
               autoComplete="current-password"
@@ -216,7 +216,7 @@ export default function Login() {
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              label="Nhớ mật khẩu"
             />
             <Button
               type="submit"
@@ -224,7 +224,7 @@ export default function Login() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Đăng nhập
             </Button>
           </Box>
         </Box>

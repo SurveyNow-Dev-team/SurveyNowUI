@@ -1,6 +1,14 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Chip } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
+import CancelSharpIcon from "@mui/icons-material/CancelSharp";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { red } from "@mui/material/colors";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+
+import { useSelector } from "react-redux/es/hooks/useSelector";
 
 import { getPendingRedeem } from "../../../apis/transaction/purchase";
 import { Header } from "../../../components";
@@ -65,11 +73,31 @@ const columns = [
     align: "center",
     minHeight: 100,
     flex: 2,
-    renderCell: (params) => <Chip label={params.value === "Pending" ? "Đang chờ" : ""} color="warning" />,
-  }
+    renderCell: (params) => (
+      <Chip
+        label={params.value === "Pending" ? "Đang chờ" : ""}
+        color="warning"
+      />
+    ),
+  },
+  {
+    headerName: "",
+    headerAlign: "center",
+    align: "center",
+    minHeight: 100,
+    flex: 1.5,
+    renderCell: (params) => (
+      <Stack direction="row" spacing={1}>
+        <CheckCircleIcon color="success" />
+        <CancelSharpIcon sx={{ color: red[900] }} />
+      </Stack>
+    ),
+  },
 ];
 
 export default function Redeem() {
+const currentColor = useSelector((state) => state.state.currentColor);
+
   const [page, setPage] = React.useState(0);
   const [size, setSize] = React.useState(5);
   const [data, setData] = React.useState([]);
@@ -88,7 +116,15 @@ export default function Redeem() {
       {/* <div className="m-2 md:m-10 mt- p-2 md:p-10 bg-white rounded-3xl"> */}
       <Header title="Yêu cầu đổi điểm" category="" />
       {loading ? (
-        <p>Loading data...</p>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress sx={{color: currentColor}} />
+        </Box>
       ) : (
         <div style={{ minHeight: 400, width: "100%" }}>
           <div style={{ display: "block", width: "100%" }}>
@@ -101,7 +137,7 @@ export default function Redeem() {
                 date: transaction.date,
                 sourceAccount: transaction.sourceAccount,
                 destinationAccount: transaction.destinationAccount,
-                status: transaction.status
+                status: transaction.status,
               }))}
               columns={columns}
               initialState={{
