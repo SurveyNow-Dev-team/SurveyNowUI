@@ -33,7 +33,7 @@ export default function ConfirmCancel({
       });
 
       setState({ ...state, open: false });
-      setPage(1);
+      setPage(0);
       setReload(!reload);
     } catch (error) {
       console.log(JSON.stringify(error.response.data, null, 2));
@@ -71,7 +71,7 @@ export default function ConfirmCancel({
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Quay lại</Button>
+        <Button onClick={handleClose}>Quay về</Button>
         <Button onClick={handleConfirm} autoFocus>
           Xác nhận
         </Button>

@@ -102,6 +102,7 @@ const columns = (handleAcceptClick, handleCancelClick) => [
       <Stack direction="row" spacing={0.5}>
         <IconButton
           aria-label="Chấp nhận"
+         
           onClick={() => handleAcceptClick(params.value)}
         >
           <CheckCircleIcon color="success" />

@@ -85,13 +85,13 @@ const Navbar = () => {
           icon={<BsChatLeft />}
         /> */}
         <NavButton
-          title="Notification"
+          title="Thông báo"
           dotColor="rgb(254, 201, 15)"
           customFunc={() => dispatch(handleClick("notification"))}
           color={currentColor}
           icon={<RiNotification3Line />}
         />
-        <TooltipComponent content="Profile" position="BottomCenter">
+        <TooltipComponent content="Hồ sơ" position="BottomCenter">
           <div
             className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
             onClick={() => dispatch(handleClick("userProfile"))}
@@ -99,7 +99,7 @@ const Navbar = () => {
             <img
               className="rounded-full w-8 h-8"
               src={(avatarUrl == undefined || avatarUrl == null || avatarUrl == "") ? avatar : avatarUrl}
-              alt="user-profile"
+              alt="Ảnh đại diện"
             />
             <p>
               <span className="text-gray-400 text-14">Xin chào,</span>{" "}

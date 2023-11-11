@@ -34,7 +34,7 @@ export const MainComponent = ({ child }) => {
       <div className=" relative dark:bg-main-dark-bg">
         <div className="d-block" style={{ position: "relative" }}>
           <div className="fixed right-4 bottom-4">
-            <TooltipComponent content="Settings" position="Top">
+            <TooltipComponent content="Cài đặt" position="Top">
               <button
                 type="button"
                 onClick={() => dispatch(setThemeSettings(true))}

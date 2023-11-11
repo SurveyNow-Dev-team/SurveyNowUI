@@ -44,7 +44,7 @@ export default function AcceptPurchaseModal({
     setSourceAccountError("");
     setMessage("");
     setState({ ...state, open: false });
-    setPage(1);
+    setPage(0);
     setReload(!reload);
   };
 
