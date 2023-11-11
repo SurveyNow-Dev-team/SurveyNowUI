@@ -18,7 +18,7 @@ export default function TransactionDurationPicker({
             format="DD/MM/YYYY"
             value={duration}
             onChange={(e) => handleDurationChange(e)}
-            calendars={1}
+            calendars={2}
           />
         </DemoItem>
       </DemoContainer>

@@ -15,12 +15,12 @@ const columns = (convertStatus, convertTransactionType) => [
     headerName: "Loại",
     headerAlign: "center",
     flex: 2,
-    minWidth: 100,
+    minWidth: 90,
     align: "center",
     renderCell: (params) => {
       const object = convertTransactionType(params.value);
       return (
-        <Chip label={object.label} color={object.color} sx={{ width: 100 }} />
+        <Chip label={object.label} color={object.color} sx={{ width: 90 }} />
       );
     },
   },
@@ -114,39 +114,47 @@ export default function TransactionTable({
   setPage,
   setSize,
 }) {
+  const isDataEmpty = data.length === 0;
+
   return (
     <div style={{ minHeight: 400, width: "100%" }}>
-      <DataGrid
-        rows={data.map((transaction) => ({
-          id: transaction.id,
-          fullName: transaction.fullName,
-          paymentMethod: transaction.paymentMethod,
-          point: transaction.point,
-          amount: `${transaction.amount} ${transaction.currency}`,
-          date: transaction.date,
-          status: transaction.status,
-          purchaseCode: transaction.purchaseCode,
-          transactionType: transaction.transactionType,
-          sourceAccount: transaction.sourceAccount,
-          destinationAccount: transaction.destinationAccount,
-        }))}
-        columns={columns(convertStatus, convertTransactionType)}
-        initialState={{
-          pagination: {
-            paginationModel: { page: page, pageSize: size },
-          },
-        }}
-        pagination
-        paginationMode="server"
-        paginationModel={{ page: page || 0, pageSize: size || 0 }}
-        onPaginationModelChange={(newPage) => {
-          setPage(newPage.page);
-          setSize(newPage.pageSize);
-        }}
-        rowCount={totalRecord}
-        pageSizeOptions={[5, 10, 15, 20]}
-        // checkboxSelection
-      />
+      {isDataEmpty ? (
+        <h3 style={{ textAlign: "center" }}>
+          Không có dữ liệu lịch sử giao dịch
+        </h3>
+      ) : (
+        <DataGrid
+          rows={data.map((transaction) => ({
+            id: transaction.id,
+            fullName: transaction.fullName,
+            paymentMethod: transaction.paymentMethod,
+            point: transaction.point,
+            amount: `${transaction.amount} ${transaction.currency}`,
+            date: transaction.date,
+            status: transaction.status,
+            purchaseCode: transaction.purchaseCode,
+            transactionType: transaction.transactionType,
+            sourceAccount: transaction.sourceAccount,
+            destinationAccount: transaction.destinationAccount,
+          }))}
+          columns={columns(convertStatus, convertTransactionType)}
+          initialState={{
+            pagination: {
+              paginationModel: { page: page, pageSize: size },
+            },
+          }}
+          pagination
+          paginationMode="server"
+          paginationModel={{ page: page || 0, pageSize: size || 0 }}
+          onPaginationModelChange={(newPage) => {
+            setPage(newPage.page);
+            setSize(newPage.pageSize);
+          }}
+          rowCount={totalRecord}
+          pageSizeOptions={[5, 10, 15, 20]}
+          // checkboxSelection
+        />
+      )}
     </div>
   );
 }
