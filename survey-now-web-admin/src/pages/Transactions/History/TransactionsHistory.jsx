@@ -12,6 +12,9 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useSelector } from "react-redux";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import FilterListOffIcon from "@mui/icons-material/FilterListOff";
+import IconButton from "@mui/material/IconButton";
 
 function TransactionHistory() {
   const [data, setData] = useState([]);
@@ -24,7 +27,13 @@ function TransactionHistory() {
   const [totalRecord, setTotalRecord] = useState(0);
   const [sortOrder, setSortOrder] = useState("DateDescending");
 
+  const [filter, setFilter] = useState(false);
+
   const currentColor = useSelector((state) => state.state.currentColor);
+
+  const handleFilterClick = () => {
+    setFilter(!filter);
+  };
 
   const handleTypeFilterChange = (event) => {
     setPage(0);
@@ -109,46 +118,60 @@ function TransactionHistory() {
     <div className="mx-4 md:m-10 mt-5 p-6 md:p-6 bg-white rounded-3xl">
       <Header category="" title="Lịch Sử Giao Dịch" />
       <div className="filter-container">
-        <Grid
-          container
-          spacing={2}
-          direction="row"
-          justifyContent="start"
-          alignItems="center"
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "end",
+            alignItems: "center",
+            marginBottom: 16,
+          }}
         >
-          <Grid item md={4}>
-            <div>
-              <TransactionTypeSelect
-                type={transactionType}
-                handleTypeChange={handleTypeFilterChange}
-              />
-            </div>
+          <IconButton aria-label="Lọc" onClick={handleFilterClick}>
+            {filter ? <FilterListIcon /> : <FilterListOffIcon />}
+          </IconButton>
+        </div>
+        {filter && (
+          <Grid
+            container
+            spacing={2}
+            direction="row"
+            justifyContent="start"
+            alignItems="center"
+          >
+            <Grid item md={4}>
+              <div>
+                <TransactionTypeSelect
+                  type={transactionType}
+                  handleTypeChange={handleTypeFilterChange}
+                />
+              </div>
+            </Grid>
+            <Grid item md={4}>
+              <div>
+                <TransactionStatusSelect
+                  status={transactionStatus}
+                  handleStatusChange={handleStatusFilterChange}
+                />
+              </div>
+            </Grid>
+            <Grid item md={4}>
+              <div>
+                <TransactionSortOrderSelect
+                  sortOrder={sortOrder}
+                  handleSortOrderChange={handleSortOrderFilterChange}
+                />
+              </div>
+            </Grid>
+            <Grid item>
+              <div style={{ marginBottom: 16 }}>
+                <TransactionDurationPicker
+                  duration={duration}
+                  handleDurationChange={handleDurationFilterChange}
+                />{" "}
+              </div>
+            </Grid>
           </Grid>
-          <Grid item md={4}>
-            <div>
-              <TransactionStatusSelect
-                status={transactionStatus}
-                handleStatusChange={handleStatusFilterChange}
-              />
-            </div>
-          </Grid>
-          <Grid item md={4}>
-            <div>
-              <TransactionSortOrderSelect
-                sortOrder={sortOrder}
-                handleSortOrderChange={handleSortOrderFilterChange}
-              />
-            </div>
-          </Grid>
-          <Grid item>
-            <div style={{marginBottom: 16}}>
-              <TransactionDurationPicker
-                duration={duration}
-                handleDurationChange={handleDurationFilterChange}
-              />{" "}
-            </div>
-          </Grid>
-        </Grid>
+        )}
       </div>
 
       {loading ? (
