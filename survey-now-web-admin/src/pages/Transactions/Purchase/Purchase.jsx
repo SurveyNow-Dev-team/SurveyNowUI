@@ -16,7 +16,7 @@ import { useSelector } from "react-redux";
 import AcceptPurchaseModal from "../../../components/Transactions/AcceptPurchase/AcceptPurchaseModal";
 import ConfirmCancel from "../../../components/Transactions/DeclinePurchase/Confirm.";
 
-const columns = (handleAcceptClick, handleCancelClick) => [
+const columns = (handleAcceptClick, handleCancelClick, convertStatus) => [
   {
     field: "fullName",
     headerName: "Người dùng",
@@ -83,13 +83,13 @@ const columns = (handleAcceptClick, handleCancelClick) => [
     align: "center",
     minWidth: 100,
     flex: 2,
-    renderCell: (params) => (
-      <Chip
-        label={params.value === "Pending" ? "Đang chờ" : ""}
-        color="primary"
-        sx={{width: 100}}
-      />
-    ),
+    renderCell: (params) => {
+      const object = convertStatus(params.value);
+      console.log(`Label: ${object.label}`);
+      return (
+        <Chip label={object.label} color={object.color} sx={{ width: 100 }} />
+      );
+    },
   },
 
   {
@@ -103,7 +103,6 @@ const columns = (handleAcceptClick, handleCancelClick) => [
       <Stack direction="row" spacing={0.5}>
         <IconButton
           aria-label="Chấp nhận"
-         
           onClick={() => handleAcceptClick(params.value)}
         >
           <CheckCircleIcon color="success" />
@@ -118,6 +117,13 @@ const columns = (handleAcceptClick, handleCancelClick) => [
     ),
   },
 ];
+
+const convertStatus = (value) => {
+  if (value === "Pending") return { label: "Đang chờ", color: "primary" };
+  if (value === "Success") return { label: "Thành công", color: "success" };
+  if (value === "Fail") return { label: "Thất bại", color: "error" };
+  if (value === "Cancel") return { label: "Hủy", color: "warning" };
+};
 
 export default function Purchase() {
   const currentColor = useSelector((state) => state.state.currentColor);
@@ -197,7 +203,11 @@ export default function Purchase() {
                 status: transaction.status,
                 purchaseCode: transaction.purchaseCode,
               }))}
-              columns={columns(handleAcceptClick, handleCancelClick)}
+              columns={columns(
+                handleAcceptClick,
+                handleCancelClick,
+                convertStatus
+              )}
               initialState={{
                 pagination: {
                   paginationModel: { page: page, pageSize: size },

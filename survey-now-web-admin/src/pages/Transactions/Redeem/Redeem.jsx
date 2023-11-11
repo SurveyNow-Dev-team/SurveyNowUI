@@ -92,6 +92,7 @@ const columns = (handleAcceptClick, handleCancelClick) => [
       />
     ),
   },
+  
 
   {
     field: "id",
