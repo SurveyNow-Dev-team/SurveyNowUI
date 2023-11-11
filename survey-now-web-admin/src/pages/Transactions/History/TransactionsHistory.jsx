@@ -8,6 +8,9 @@ import TransactionStatusSelect from "../../../components/Transactions/Transactio
 import TransactionDurationPicker from "../../../components/Transactions/TransactionDurationPicker";
 import TransactionSortOrderSelect from "../../../components/Transactions/TransactionSortOrderSelect";
 import dayjs from "dayjs";
+import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
+import { useSelector } from "react-redux";
 
 function TransactionHistory() {
   const [data, setData] = useState([]);
@@ -19,6 +22,8 @@ function TransactionHistory() {
   const [size, setSize] = useState(10);
   const [totalRecord, setTotalRecord] = useState(0);
   const [sortOrder, setSortOrder] = useState("DateDescending");
+
+  const currentColor = useSelector((state) => state.state.currentColor);
 
   const handleTypeFilterChange = (event) => {
     setPage(0);
@@ -85,6 +90,7 @@ function TransactionHistory() {
   };
 
   useEffect(() => {
+    setLoading(true);
     fetchData(
       setData,
       setLoading,
@@ -99,8 +105,8 @@ function TransactionHistory() {
   }, [page, size]);
 
   return (
-    <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
-      <Header category="Trang" title="Lịch Sử Giao Dịch" />
+    <div className="mx-4 md:m-10 mt-5 p-6 md:p-6 bg-white rounded-3xl">
+      <Header category="" title="Lịch Sử Giao Dịch" />
       <div className="filter-container">
         <div>
           <TransactionTypeSelect
@@ -129,7 +135,15 @@ function TransactionHistory() {
       </div>
 
       {loading ? (
-        <p>Loading data...</p>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress sx={{ color: currentColor }} />
+        </Box>
       ) : (
         <TransactionsTable
           data={data}
@@ -156,6 +170,7 @@ const handleTypeChange = (
   size,
   setTotalRecord
 ) => {
+  setLoading(true);
   const value = event.target.value;
   setTransactionType(value === "All" ? null : value);
   fetchData(
@@ -183,6 +198,7 @@ const handleStatusChange = (
   size,
   setTotalRecord
 ) => {
+  setLoading(true);
   const value = event.target.value;
   setTransactionStatus(value === "All" ? null : value);
   fetchData(
@@ -211,6 +227,7 @@ const handleDurationChange = (
   setTotalRecord
 ) => {
   const value = event;
+  setLoading(true);
   setDuration(value);
   fetchData(
     setData,
@@ -237,6 +254,7 @@ const handleSortOrderChange = (
   size,
   setTotalRecord
 ) => {
+  setLoading(true);
   console.log(event.target);
   const value = event.target.value;
   setSortOrder(value === "DateDescending" ? null : value);

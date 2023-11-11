@@ -86,7 +86,8 @@ const columns = (handleAcceptClick, handleCancelClick) => [
     renderCell: (params) => (
       <Chip
         label={params.value === "Pending" ? "Đang chờ" : ""}
-        color="warning"
+        color="primary"
+        sx={{width: 100}}
       />
     ),
   },
