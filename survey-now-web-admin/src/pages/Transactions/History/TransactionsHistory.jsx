@@ -9,6 +9,7 @@ import TransactionDurationPicker from "../../../components/Transactions/Transact
 import TransactionSortOrderSelect from "../../../components/Transactions/TransactionSortOrderSelect";
 import dayjs from "dayjs";
 import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useSelector } from "react-redux";
 
@@ -108,30 +109,46 @@ function TransactionHistory() {
     <div className="mx-4 md:m-10 mt-5 p-6 md:p-6 bg-white rounded-3xl">
       <Header category="" title="Lịch Sử Giao Dịch" />
       <div className="filter-container">
-        <div>
-          <TransactionTypeSelect
-            type={transactionType}
-            handleTypeChange={handleTypeFilterChange}
-          />
-        </div>
-        <div>
-          <TransactionStatusSelect
-            status={transactionStatus}
-            handleStatusChange={handleStatusFilterChange}
-          />
-        </div>
-        <div>
-          <TransactionDurationPicker
-            duration={duration}
-            handleDurationChange={handleDurationFilterChange}
-          />{" "}
-        </div>
-        <div>
-          <TransactionSortOrderSelect
-            sortOrder={sortOrder}
-            handleSortOrderChange={handleSortOrderFilterChange}
-          />
-        </div>
+        <Grid
+          container
+          spacing={2}
+          direction="row"
+          justifyContent="start"
+          alignItems="center"
+        >
+          <Grid item md={4}>
+            <div>
+              <TransactionTypeSelect
+                type={transactionType}
+                handleTypeChange={handleTypeFilterChange}
+              />
+            </div>
+          </Grid>
+          <Grid item md={4}>
+            <div>
+              <TransactionStatusSelect
+                status={transactionStatus}
+                handleStatusChange={handleStatusFilterChange}
+              />
+            </div>
+          </Grid>
+          <Grid item md={4}>
+            <div>
+              <TransactionSortOrderSelect
+                sortOrder={sortOrder}
+                handleSortOrderChange={handleSortOrderFilterChange}
+              />
+            </div>
+          </Grid>
+          <Grid item>
+            <div style={{marginBottom: 16}}>
+              <TransactionDurationPicker
+                duration={duration}
+                handleDurationChange={handleDurationFilterChange}
+              />{" "}
+            </div>
+          </Grid>
+        </Grid>
       </div>
 
       {loading ? (
