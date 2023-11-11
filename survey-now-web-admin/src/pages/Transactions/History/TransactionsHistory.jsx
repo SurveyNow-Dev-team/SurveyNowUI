@@ -15,6 +15,8 @@ import { useSelector } from "react-redux";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import FilterListOffIcon from "@mui/icons-material/FilterListOff";
 import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
+import RefreshIcon from "@mui/icons-material/Refresh";
 
 function TransactionHistory() {
   const [data, setData] = useState([]);
@@ -35,68 +37,33 @@ function TransactionHistory() {
     setFilter(!filter);
   };
 
+  const handleResetDuration = () => {
+    setPage(0);
+    setDuration([dayjs(), dayjs()]);
+  };
+
   const handleTypeFilterChange = (event) => {
     setPage(0);
-    handleTypeChange(
-      setTransactionType,
-      setData,
-      setLoading,
-      event,
-      transactionStatus,
-      duration,
-      sortOrder,
-      page,
-      size,
-      setTotalRecord
-    );
+    const value = event.target.value;
+    setTransactionType(value === "All" ? null : value);
   };
 
   function handleStatusFilterChange(event) {
     setPage(0);
-    handleStatusChange(
-      setTransactionStatus,
-      setData,
-      setLoading,
-      event,
-      transactionType,
-      duration,
-      sortOrder,
-      page,
-      size,
-      setTotalRecord
-    );
+    const value = event.target.value;
+    setTransactionStatus(value === "All" ? null : value);
   }
 
   const handleDurationFilterChange = (event) => {
     setPage(0);
-    handleDurationChange(
-      setDuration,
-      setData,
-      setLoading,
-      event,
-      transactionType,
-      transactionStatus,
-      sortOrder,
-      page,
-      size,
-      setTotalRecord
-    );
+    const value = event;
+    setDuration(value);
   };
 
   const handleSortOrderFilterChange = (event) => {
     setPage(0);
-    handleSortOrderChange(
-      setSortOrder,
-      setData,
-      setLoading,
-      event,
-      transactionType,
-      transactionStatus,
-      duration,
-      page,
-      size,
-      setTotalRecord
-    );
+    const value = event.target.value;
+    setSortOrder(value === "DateDescending" ? null : value);
   };
 
   useEffect(() => {
@@ -112,7 +79,7 @@ function TransactionHistory() {
       size,
       setTotalRecord
     );
-  }, [page, size]);
+  }, [page, size, transactionType, transactionStatus, duration, sortOrder]);
 
   return (
     <div className="mx-4 md:m-10 mt-5 p-6 md:p-6 bg-white rounded-3xl">
@@ -170,6 +137,19 @@ function TransactionHistory() {
                 />{" "}
               </div>
             </Grid>
+            <Grid item marginTop={3} alignItems="center" md={4}>
+              <div>
+                <Button
+                  variant="contained"
+                  color="success"
+                  size="large"
+                  startIcon={<RefreshIcon />}
+                  onClick={handleResetDuration}
+                >
+                  Đặt lại thời gian
+                </Button>
+              </div>
+            </Grid>
           </Grid>
         )}
       </div>
@@ -197,119 +177,6 @@ function TransactionHistory() {
     </div>
   );
 }
-
-const handleTypeChange = (
-  setTransactionType,
-  setData,
-  setLoading,
-  event,
-  transactionStatus,
-  duration,
-  sortOrder,
-  page,
-  size,
-  setTotalRecord
-) => {
-  setLoading(true);
-  const value = event.target.value;
-  setTransactionType(value === "All" ? null : value);
-  fetchData(
-    setData,
-    setLoading,
-    value,
-    transactionStatus,
-    duration,
-    sortOrder,
-    page,
-    size,
-    setTotalRecord
-  );
-};
-
-const handleStatusChange = (
-  setTransactionStatus,
-  setData,
-  setLoading,
-  event,
-  transactionType,
-  duration,
-  sortOrder,
-  page,
-  size,
-  setTotalRecord
-) => {
-  setLoading(true);
-  const value = event.target.value;
-  setTransactionStatus(value === "All" ? null : value);
-  fetchData(
-    setData,
-    setLoading,
-    transactionType,
-    value,
-    duration,
-    sortOrder,
-    page,
-    size,
-    setTotalRecord
-  );
-};
-
-const handleDurationChange = (
-  setDuration,
-  setData,
-  setLoading,
-  event,
-  transactionType,
-  transactionStatus,
-  sortOrder,
-  page,
-  size,
-  setTotalRecord
-) => {
-  const value = event;
-  setLoading(true);
-  setDuration(value);
-  fetchData(
-    setData,
-    setLoading,
-    transactionType,
-    transactionStatus,
-    value,
-    sortOrder,
-    page,
-    size,
-    setTotalRecord
-  );
-};
-
-const handleSortOrderChange = (
-  setSortOrder,
-  setData,
-  setLoading,
-  event,
-  transactionType,
-  transactionStatus,
-  duration,
-  page,
-  size,
-  setTotalRecord
-) => {
-  setLoading(true);
-  console.log(event.target);
-  const value = event.target.value;
-  setSortOrder(value === "DateDescending" ? null : value);
-  fetchData(
-    setData,
-    setLoading,
-    transactionType,
-    transactionStatus,
-    duration,
-    value,
-    page,
-    size,
-    setTotalRecord
-  );
-};
 
 const fetchData = async (
   setData,
@@ -346,7 +213,6 @@ const fetchData = async (
     setData(response.results);
     setTotalRecord(response.totalRecords || 0);
     setLoading(false);
-    console.log(`Current Page: ${page}; Size: ${size}`);
   } catch (error) {
     console.error("Error fetching data:", error);
     setLoading(false);

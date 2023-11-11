@@ -2,13 +2,27 @@ import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Chip } from "@mui/material";
 
-const columns = (convertStatus) => [
+const columns = (convertStatus, convertTransactionType) => [
   {
     field: "fullName",
     headerName: "Người dùng",
     headerAlign: "center",
     flex: 2,
     align: "center",
+  },
+  {
+    field: "transactionType",
+    headerName: "Loại",
+    headerAlign: "center",
+    flex: 2,
+    minWidth: 100,
+    align: "center",
+    renderCell: (params) => {
+      const object = convertTransactionType(params.value);
+      return (
+        <Chip label={object.label} color={object.color} sx={{ width: 100 }} />
+      );
+    },
   },
   {
     field: "paymentMethod",
@@ -71,11 +85,19 @@ const columns = (convertStatus) => [
     flex: 2,
     renderCell: (params) => {
       const object = convertStatus(params.value);
-      console.log(`Label: ${object.label}`);
-      return <Chip label={object.label} color={object.color} sx={{width: 100}}/>;
+      return (
+        <Chip label={object.label} color={object.color} sx={{ width: 100 }} />
+      );
     },
   },
 ];
+
+const convertTransactionType = (value) => {
+  if (value === "Reddem Gift") return { label: "Đổi điểm", color: "info" };
+  if (value === "Purchase Point")
+    return { label: "Mua điểm", color: "success" };
+  if (value === "Refund Money") return { label: "Hoàn tiền", color: "warning" };
+};
 
 const convertStatus = (value) => {
   if (value === "Pending") return { label: "Đang chờ", color: "primary" };
@@ -104,8 +126,11 @@ export default function TransactionTable({
           date: transaction.date,
           status: transaction.status,
           purchaseCode: transaction.purchaseCode,
+          transactionType: transaction.transactionType,
+          sourceAccount: transaction.sourceAccount,
+          destinationAccount: transaction.destinationAccount,
         }))}
-        columns={columns(convertStatus)}
+        columns={columns(convertStatus, convertTransactionType)}
         initialState={{
           pagination: {
             paginationModel: { page: page, pageSize: size },
