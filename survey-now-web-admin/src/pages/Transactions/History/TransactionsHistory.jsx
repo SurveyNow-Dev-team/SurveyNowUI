@@ -94,7 +94,7 @@ function TransactionHistory() {
           }}
         >
           <IconButton aria-label="Lọc" onClick={handleFilterClick}>
-            {filter ? <FilterListIcon /> : <FilterListOffIcon />}
+            {filter ? <FilterListOffIcon /> : <FilterListIcon />}
           </IconButton>
         </div>
         {filter && (
@@ -194,10 +194,6 @@ const fetchData = async (
     const status = statusFilter === "All" ? null : statusFilter;
     var fromDate = duration[0] === "" ? null : duration[0].format("DD/MM/YYYY");
     var toDate = duration[1] === "" ? null : duration[1].format("DD/MM/YYYY");
-    if (fromDate === toDate) {
-      fromDate = null;
-      toDate = null;
-    }
     const sort = sortOrder === "DateDescending" ? null : sortOrder;
     const pageNum = page !== undefined ? page + 1 : 0;
     const pageSize = size || 10;
