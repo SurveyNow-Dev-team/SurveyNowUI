@@ -8,6 +8,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { Alert } from "@mui/material";
 
 import { cancelPendingPurchase } from "../../../apis/transaction/purchase";
+import { useSelector } from "react-redux";
 
 export default function ConfirmCancel({
   state,
@@ -18,7 +19,7 @@ export default function ConfirmCancel({
 }) {
   const [message, setMessage] = React.useState("");
   const [loading, setLoading] = React.useState(false);
-  const currentColor = useSelector(state.state.currentColor);
+  const currentColor = useSelector(state => state.state.currentColor);
 
   const handleClose = () => {
     // setMessage("");
