@@ -69,19 +69,23 @@ export default function AcceptPurchaseModal({
     try {
       event.preventDefault();
 
+      let valid = true;
+
       if (inputs.transactionId.trim() === "") {
         setSourceAccountError(`Tài khoản nguồn không được để trống. `);
+        valid = false;
       } else {
         setSourceAccountError("");
       }
 
       if (inputs.transactionId.trim() === "") {
         setTransactionError(`Mã giao dịch không được để trống.`);
+        valid = false;
       } else {
         setTransactionError("");
       }
 
-      if (transactionError !== "" || sourceAccountError !== "") {
+      if (!valid) {
         setMessage("");
         return;
       }
@@ -95,26 +99,20 @@ export default function AcceptPurchaseModal({
       //   message = data.reposne?.data?.message || "Thành công";
       handleUpdate();
     } catch (error) {
-      console.log(JSON.stringify(error.response.data, null, 2));
       if (error.response) {
         if (error.response.data.title) {
-          console.log(error.response?.data?.title || "Undefined.");
           setSeverity("error");
           setMessage(error.response?.data?.title || "Undefined.");
         } else {
-          console.log(error.response?.data?.message || "Undefined.");
           setSeverity("error");
           setMessage(error.response?.data?.message || "Undefined.");
         }
       } else {
-        console.log(error.message);
         setSeverity("error");
         setMessage(error.message);
       }
     }
   };
-
-  console.log(`Modal id: ${state.transactionId}`);
 
   return (
     <Dialog open={state.open} onClose={handleClose}>
@@ -188,8 +186,6 @@ export default function AcceptPurchaseModal({
 //   const handleClose = () => {
 //     setOpen(false);
 //   };
-
-//   console.log("Call snake bar");
 
 //   return (
 //     <div>

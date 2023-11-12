@@ -70,34 +70,30 @@ export default function Login() {
     try {
       event.preventDefault();
 
-      console.log(`Email error: ${emailError}`);
-      console.log(`Password error: ${passError}`);
+      let valid = true;
 
       if (email.trim() === "") {
         setEmailError(`Email is required.`);
+        valid = false;
       } else {
         setEmailError("");
       }
       if (password.trim() === "") {
         setPassError(`Password is required. `);
+        valid = false;
       } else {
         setPassError("");
       }
 
-      if (emailError !== "" || passError !== "") {
+      if (!valid) {
         setMessage(undefined);
         return;
       }
-
-      console.log(`Valid data.`);
 
       const data = await login({
         email: email,
         password: password,
       });
-
-      //log data
-      console.log(JSON.stringify(data, null, 2));
 
       const roleData = data?.role;
       if (roleData !== "Admin") {
@@ -115,7 +111,6 @@ export default function Login() {
 
       //Store token
       const token = data?.token || "";
-      console.log(JSON.stringify(token));
       localStorage.setItem("token", JSON.stringify(token));
 
       const user = {
@@ -133,17 +128,13 @@ export default function Login() {
 
       navigate("/ecommerce");
     } catch (error) {
-      console.log(JSON.stringify(error.response.data, null, 2));
       if (error.response) {
         if (error.response.data.title) {
-          console.log(error.response?.data?.title || "Undefined.");
           setMessage(error.response?.data?.title || "Undefined.");
         } else {
-          console.log(error.response?.data?.message || "Undefined.");
           setMessage(error.response?.data?.message || "Undefined.");
         }
       } else {
-        console.log(error.message);
         setMessage(error.message);
       }
     }

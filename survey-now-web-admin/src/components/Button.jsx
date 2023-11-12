@@ -33,7 +33,6 @@ const Button = ({
     dispatch(setIsClicked(initialState));
 
     if (isLogOut) {
-      console.log("logout");
       localStorage.clear();
       dispatch(setAuthentication(false));
       navigate("/login");

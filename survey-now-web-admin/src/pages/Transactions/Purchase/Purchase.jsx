@@ -85,7 +85,6 @@ const columns = (handleAcceptClick, handleCancelClick, convertStatus) => [
     flex: 2,
     renderCell: (params) => {
       const object = convertStatus(params.value);
-      console.log(`Label: ${object.label}`);
       return (
         <Chip label={object.label} color={object.color} sx={{ width: 100 }} />
       );
@@ -155,8 +154,6 @@ export default function Purchase() {
   };
 
   React.useEffect(() => {
-    console.log(`Page: ${page}`);
-    console.log(`Size: ${size}`);
     setLoading(true);
     fetchData(page, size, setData, setMessage, setTotalRecord, setLoading);
   }, [page, size, reload]);
@@ -242,29 +239,23 @@ const fetchData = async (
   setTotalRecord,
   setLoading
 ) => {
-  console.log("Call fetch function");
   try {
     const data = await getPendingPurchase(
       page !== undefined ? page + 1 : 0,
       size || 5
     );
 
-    console.log(JSON.stringify(data, null, 2));
     setTotalRecord(data?.totalRecords || 0);
     setData(data?.results || []);
     setLoading(false);
   } catch (error) {
-    console.log(JSON.stringify(error.response.data, null, 2));
     if (error.response) {
       if (error.response.data.title) {
-        console.log(error.response?.data?.title || "Undefined.");
         setMessage(error.response?.data?.title || "Undefined.");
       } else {
-        console.log(error.response?.data?.message || "Undefined.");
         setMessage(error.response?.data?.message || "Undefined.");
       }
     } else {
-      console.log(error.message);
       setMessage(error.message);
     }
   }

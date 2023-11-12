@@ -35,17 +35,13 @@ export default function ConfirmCancel({
       setPage(0);
       setReload(!reload);
     } catch (error) {
-      console.log(JSON.stringify(error.response.data, null, 2));
       if (error.response) {
         if (error.response.data.title) {
-          console.log(error.response?.data?.title || "Undefined.");
           setMessage(error.response?.data?.title || "Undefined.");
         } else {
-          console.log(error.response?.data?.message || "Undefined.");
           setMessage(error.response?.data?.message || "Undefined.");
         }
       } else {
-        console.log(error.message);
         setMessage(error.message);
       }
     }

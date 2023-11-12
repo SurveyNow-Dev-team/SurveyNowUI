@@ -58,13 +58,16 @@ export default function AcceptRedeem({
     try {
       event.preventDefault();
 
+      let valid = true;
+
       if (inputs.momoTransactionId.trim() === "") {
         setTransactionError(`Mã giao dịch không được để trống.`);
+        valid = false;
       } else {
         setTransactionError("");
       }
 
-      if (transactionError !== "") {
+      if (!valid) {
         setMessage("");
         return;
       }
@@ -77,26 +80,20 @@ export default function AcceptRedeem({
       //   message = data.reposne?.data?.message || "Thành công";
       handleUpdate();
     } catch (error) {
-      // console.log(JSON.stringify(error.response.data, null, 2));
       if (error.response) {
         if (error.response.data.title) {
-          console.log(error.response?.data?.title || "Undefined.");
           setSeverity("error");
           setMessage(error.response?.data?.title || "Undefined.");
         } else {
-          console.log(error.response?.data?.message || "Undefined.");
           setSeverity("error");
           setMessage(error.response?.data?.message || "Undefined.");
         }
       } else {
-        console.log(error.message);
         setSeverity("error");
         setMessage(error.message);
       }
     }
   };
-
-  console.log(`Modal id: ${state.transactionId}`);
 
   return (
     <Dialog open={state.open} onClose={handleClose}>
