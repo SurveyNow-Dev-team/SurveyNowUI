@@ -21,7 +21,7 @@ export default function ConfirmCancel({
 }) {
   const [message, setMessage] = React.useState("");
   const [loading, setLoading] = React.useState(false);
-  const currentColor = useSelector(state.state.currentColor);
+  const currentColor = useSelector(state => state.state.currentColor);
 
   const handleClose = () => {
     // setMessage("");
