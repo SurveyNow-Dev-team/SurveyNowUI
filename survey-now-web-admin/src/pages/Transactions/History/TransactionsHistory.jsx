@@ -23,7 +23,7 @@ function TransactionHistory() {
   const [loading, setLoading] = useState(true);
   const [transactionType, setTransactionType] = useState("All");
   const [transactionStatus, setTransactionStatus] = useState("All");
-  const [duration, setDuration] = useState([dayjs(), dayjs()]);
+  const [duration, setDuration] = useState(["", ""]);
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(10);
   const [totalRecord, setTotalRecord] = useState(0);
@@ -39,7 +39,7 @@ function TransactionHistory() {
 
   const handleResetDuration = () => {
     setPage(0);
-    setDuration([dayjs(), dayjs()]);
+    setDuration(["", ""]);
   };
 
   const handleTypeFilterChange = (event) => {
