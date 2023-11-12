@@ -10,6 +10,7 @@ import {
 } from "../../store/slices/auth.slice";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -51,12 +52,14 @@ const defaultTheme = createTheme();
 export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const currentColor = useSelector((state) => state.state.currentColor);
 
   const [email, setEmailForm] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [message, setMessage] = React.useState(undefined);
   const [passError, setPassError] = React.useState("");
   const [emailError, setEmailError] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
 
   const handleEmailChange = (e) => {
     setEmailForm(e.target.value || "");
@@ -89,6 +92,8 @@ export default function Login() {
         setMessage(undefined);
         return;
       }
+
+      setLoading(true);
 
       const data = await login({
         email: email,
@@ -137,6 +142,8 @@ export default function Login() {
       } else {
         setMessage(error.message);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -167,10 +174,22 @@ export default function Login() {
             noValidate
             sx={{ mt: 1 }}
           >
-            {message && (
-              <Alert variant="outlined" severity="error">
-                {`Lỗi: ${message}`}
-              </Alert>
+            {loading ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <CircularProgress sx={{ color: currentColor }} />
+              </Box>
+            ) : (
+              message && (
+                <Alert variant="outlined" severity="error">
+                  {`Lỗi: ${message}`}
+                </Alert>
+              )
             )}
             <TextField
               margin="normal"

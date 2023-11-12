@@ -16,6 +16,7 @@ import Snackbar from "@mui/material/Snackbar";
 
 import { acceptPendingPurchase } from "../../../apis/transaction/purchase";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 export default function AcceptPurchaseModal({
   state,
@@ -24,6 +25,8 @@ export default function AcceptPurchaseModal({
   reload,
   setReload,
 }) {
+  const currentColor = useSelector((state) => state.state.currentColor);
+
   const handleClose = () => {
     setInputs({
       transactionId: "",
@@ -53,6 +56,7 @@ export default function AcceptPurchaseModal({
   const [message, setMessage] = useState("");
   const [openSnakeBar, setOpenSnakeBar] = useState(false);
   const [severity, setSeverity] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const [inputs, setInputs] = useState({
     transactionId: "",
@@ -90,6 +94,7 @@ export default function AcceptPurchaseModal({
         return;
       }
 
+      setLoading(true);
       const data = await acceptPendingPurchase({
         id: state.transactionId,
         eWalletTransactionId: inputs.transactionId,
@@ -111,6 +116,8 @@ export default function AcceptPurchaseModal({
         setSeverity("error");
         setMessage(error.message);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -123,10 +130,22 @@ export default function AcceptPurchaseModal({
         </DialogContentText>
 
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          {message !== "" && (
-            <Alert variant="outlined" severity="error">
-              {`Lỗi: ${message}`}
-            </Alert>
+          {loading ? (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <CircularProgress sx={{ color: currentColor }} />
+            </Box>
+          ) : (
+            message !== "" && (
+              <Alert variant="outlined" severity="error">
+                {`Lỗi: ${message}`}
+              </Alert>
+            )
           )}
           <TextField
             margin="normal"

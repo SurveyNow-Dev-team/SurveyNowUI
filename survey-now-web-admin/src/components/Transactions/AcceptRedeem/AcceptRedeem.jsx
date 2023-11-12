@@ -9,9 +9,11 @@ import DialogTitle from "@mui/material/DialogTitle";
 
 import { Alert } from "@mui/material";
 import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import { acceptPendingRedeem } from "../../../apis/transaction/purchase";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 export default function AcceptRedeem({
   state,
@@ -20,6 +22,8 @@ export default function AcceptRedeem({
   reload,
   setReload,
 }) {
+  const currentColor = useSelector((state) => state.state.currentColor);
+
   const handleClose = () => {
     setInputs({
       momoTransactionId: "",
@@ -43,6 +47,7 @@ export default function AcceptRedeem({
   const [transactionError, setTransactionError] = useState("");
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const [inputs, setInputs] = useState({
     momoTransactionId: "",
@@ -72,6 +77,7 @@ export default function AcceptRedeem({
         return;
       }
 
+      setLoading(true);
       const data = await acceptPendingRedeem({
         id: state.transactionId,
         momoTransactionId: inputs.momoTransactionId,
@@ -92,6 +98,8 @@ export default function AcceptRedeem({
         setSeverity("error");
         setMessage(error.message);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -104,10 +112,22 @@ export default function AcceptRedeem({
         </DialogContentText>
 
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          {message !== "" && (
-            <Alert variant="outlined" severity="error">
-              {`Lỗi: ${message}`}
-            </Alert>
+          {loading ? (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <CircularProgress sx={{ color: currentColor }} />
+            </Box>
+          ) : (
+            message !== "" && (
+              <Alert variant="outlined" severity="error">
+                {`Lỗi: ${message}`}
+              </Alert>
+            )
           )}
           <TextField
             margin="normal"

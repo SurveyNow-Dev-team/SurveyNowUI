@@ -5,10 +5,11 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-
+import CircularProgress from "@mui/material/CircularProgress";
 
 import { Alert } from "@mui/material";
 import { cancelPendingRedeem } from "../../../apis/transaction/purchase";
+import { useSelector } from "react-redux";
 
 export default function ConfirmCancel({
   state,
@@ -18,6 +19,8 @@ export default function ConfirmCancel({
   setReload,
 }) {
   const [message, setMessage] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
+  const currentColor = useSelector(state.state.currentColor);
 
   const handleClose = () => {
     // setMessage("");
@@ -28,6 +31,7 @@ export default function ConfirmCancel({
     try {
       event.preventDefault();
 
+      setLoading(true);
       const data = await cancelPendingRedeem({
         id: state.transactionId,
       });
@@ -45,6 +49,8 @@ export default function ConfirmCancel({
       } else {
         setMessage(error.message);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -57,14 +63,26 @@ export default function ConfirmCancel({
     >
       <DialogTitle id="alert-dialog-title">{"Hủy giao dịch"}</DialogTitle>
       <DialogContent>
-        {message !== "" && (
-          <Alert variant="outlined" severity="error">
-            {`Lỗi: ${message}`}
-          </Alert>
-        )}
         <DialogContentText id="alert-dialog-description">
           Bạn có chắc muốn hủy giao dịch?
         </DialogContentText>
+        {loading ? (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <CircularProgress sx={{ color: currentColor }} />
+          </Box>
+        ) : (
+          message !== "" && (
+            <Alert variant="outlined" severity="error">
+              {`Lỗi: ${message}`}
+            </Alert>
+          )
+        )}
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Quay về</Button>
