@@ -40,6 +40,7 @@ const Navbar = () => {
   const screenSize = useSelector((state) => state.state.screenSize);
   const user = JSON.parse(localStorage.getItem("user"));
   const fullName = user.fullName;
+  const avatarUrl = user.avatarUrl;
 
   useEffect(() => {
     const handleResize = () => dispatch(setScreenSize(window.innerWidth));
@@ -84,21 +85,21 @@ const Navbar = () => {
           icon={<BsChatLeft />}
         /> */}
         <NavButton
-          title="Notification"
+          title="Thông báo"
           dotColor="rgb(254, 201, 15)"
           customFunc={() => dispatch(handleClick("notification"))}
           color={currentColor}
           icon={<RiNotification3Line />}
         />
-        <TooltipComponent content="Profile" position="BottomCenter">
+        <TooltipComponent content="Hồ sơ" position="BottomCenter">
           <div
             className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
             onClick={() => dispatch(handleClick("userProfile"))}
           >
             <img
               className="rounded-full w-8 h-8"
-              src={avatar}
-              alt="user-profile"
+              src={(avatarUrl == undefined || avatarUrl == null || avatarUrl == "") ? avatar : avatarUrl}
+              alt="Ảnh đại diện"
             />
             <p>
               <span className="text-gray-400 text-14">Xin chào,</span>{" "}

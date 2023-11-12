@@ -2,12 +2,8 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setActiveMenu } from "../store/slices/state.slice";
 import { Link, NavLink } from "react-router-dom";
-import Avatar from "@mui/material/Avatar";
-import { SiShopware } from "react-icons/si";
 import { MdOutlineCancel } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
-
-import Logo from "../assets/images/transparent-logo.png";
 
 import { links } from "../data/dummy";
 
@@ -50,7 +46,7 @@ const Sidebar = () => {
                 alt="SurveyNow Logo"
                 src={Logo}
               ></Avatar> */}
-              <span style={{ color: "#00B14F" }}>Survey Now</span>
+              <span style={{ color: currentColor }}>SurveyNow</span>
             </Link>
             <TooltipComponent content="Menu" position="BottomCenter">
               <button

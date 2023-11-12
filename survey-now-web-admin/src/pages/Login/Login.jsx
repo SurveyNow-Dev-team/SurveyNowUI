@@ -8,25 +8,22 @@ import {
   setPoint,
   setAuthentication,
 } from "../../store/slices/auth.slice";
-import { jwtDecode } from "jwt-decode";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
 import { Alert } from "@mui/material";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { login } from "../../apis/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Troubleshoot } from "@mui/icons-material";
 
 import Logo from "../../assets/images/logo.png";
 
@@ -39,7 +36,7 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/" >
+      <Link color="inherit" href="https://mui.com/">
         Survey Now
       </Link>{" "}
       {new Date().getFullYear()}
@@ -55,12 +52,14 @@ const defaultTheme = createTheme();
 export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const currentColor = useSelector((state) => state.state.currentColor);
 
   const [email, setEmailForm] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [message, setMessage] = React.useState(undefined);
   const [passError, setPassError] = React.useState("");
   const [emailError, setEmailError] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
 
   const handleEmailChange = (e) => {
     setEmailForm(e.target.value || "");
@@ -74,34 +73,32 @@ export default function Login() {
     try {
       event.preventDefault();
 
-      console.log(`Email error: ${emailError}`);
-      console.log(`Password error: ${passError}`);
+      let valid = true;
 
       if (email.trim() === "") {
         setEmailError(`Email is required.`);
+        valid = false;
       } else {
         setEmailError("");
       }
       if (password.trim() === "") {
         setPassError(`Password is required. `);
+        valid = false;
       } else {
         setPassError("");
       }
 
-      if (emailError !== "" || passError !== "") {
+      if (!valid) {
         setMessage(undefined);
         return;
       }
 
-      console.log(`Valid data.`);
+      setLoading(true);
 
       const data = await login({
         email: email,
         password: password,
       });
-
-      //log data
-      console.log(JSON.stringify(data, null, 2));
 
       const roleData = data?.role;
       if (roleData !== "Admin") {
@@ -119,7 +116,6 @@ export default function Login() {
 
       //Store token
       const token = data?.token || "";
-      console.log(JSON.stringify(token));
       localStorage.setItem("token", JSON.stringify(token));
 
       const user = {
@@ -137,19 +133,17 @@ export default function Login() {
 
       navigate("/ecommerce");
     } catch (error) {
-      console.log(JSON.stringify(error.response.data, null, 2));
       if (error.response) {
         if (error.response.data.title) {
-          console.log(error.response?.data?.title || "Undefined.");
           setMessage(error.response?.data?.title || "Undefined.");
         } else {
-          console.log(error.response?.data?.Message || "Undefined.");
-          setMessage(error.response?.data?.Message || "Undefined.");
+          setMessage(error.response?.data?.message || "Undefined.");
         }
       } else {
-        console.log(error.message);
         setMessage(error.message);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -172,7 +166,7 @@ export default function Login() {
             src={Logo}
           ></Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Đăng nhập
           </Typography>
           <Box
             component="form"
@@ -180,17 +174,29 @@ export default function Login() {
             noValidate
             sx={{ mt: 1 }}
           >
-            {message && (
-              <Alert variant="outlined" severity="error">
-                {`Error: ${message}`}
-              </Alert>
+            {loading ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <CircularProgress sx={{ color: currentColor }} />
+              </Box>
+            ) : (
+              message && (
+                <Alert variant="outlined" severity="error">
+                  {`Lỗi: ${message}`}
+                </Alert>
+              )
             )}
             <TextField
               margin="normal"
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label="Email"
               type="email"
               name="email"
               autoComplete="email"
@@ -205,7 +211,7 @@ export default function Login() {
               required
               fullWidth
               name="password"
-              label="Password"
+              label="Mật khẩu"
               type="password"
               id="password"
               autoComplete="current-password"
@@ -216,7 +222,7 @@ export default function Login() {
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              label="Nhớ mật khẩu"
             />
             <Button
               type="submit"
@@ -224,7 +230,7 @@ export default function Login() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Đăng nhập
             </Button>
           </Box>
         </Box>
