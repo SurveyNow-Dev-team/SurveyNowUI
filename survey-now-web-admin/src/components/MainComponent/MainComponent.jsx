@@ -11,7 +11,6 @@ import { FiSettings } from "react-icons/fi";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 
 import { Navbar, Footer, Sidebar, ThemeSettings } from "../../components";
-import zIndex from "@mui/material/styles/zIndex";
 
 export const MainComponent = ({ child }) => {
   const dispatch = useDispatch();
@@ -39,7 +38,7 @@ export const MainComponent = ({ child }) => {
                 type="button"
                 onClick={() => dispatch(setThemeSettings(true))}
                 style={{ background: currentColor, borderRadius: "50%" }}
-                className="text-3xl text-white p-3 hover:drop-shadow-xl hover:bg-light-gray"
+                className="text-2xl text-white p-2 hover:drop-shadow-xl hover:bg-light-gray"
               >
                 <FiSettings />
               </button>
@@ -76,7 +75,7 @@ export const MainComponent = ({ child }) => {
             }
           >
             <div>
-              <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full">
+              <div className="md:static bg-main-bg dark:bg-main-dark-bg navbar w-full">
                 <Navbar />
               </div>
               <div>

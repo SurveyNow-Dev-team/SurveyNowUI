@@ -24,6 +24,7 @@ const columns = (handleAcceptClick, handleCancelClick) => [
     headerAlign: "center",
     flex: 2,
     align: "center",
+    sortable: false,
   },
   {
     field: "paymentMethod",
@@ -31,6 +32,7 @@ const columns = (handleAcceptClick, handleCancelClick) => [
     headerAlign: "center",
     flex: 2,
     align: "center",
+    sortable: false,
   },
   {
     field: "point",
@@ -39,6 +41,7 @@ const columns = (handleAcceptClick, handleCancelClick) => [
     headerAlign: "center",
     flex: 1,
     align: "center",
+    sortable: false,
   },
   {
     field: "amount",
@@ -47,6 +50,7 @@ const columns = (handleAcceptClick, handleCancelClick) => [
     minWidth: 80,
     flex: 2,
     align: "center",
+    sortable: false,
   },
   {
     field: "date",
@@ -55,6 +59,7 @@ const columns = (handleAcceptClick, handleCancelClick) => [
     minWidth: 160,
     flex: 4,
     align: "center",
+    sortable: false,
   },
   {
     field: "sourceAccount",
@@ -62,6 +67,7 @@ const columns = (handleAcceptClick, handleCancelClick) => [
     headerAlign: "center",
     flex: 2.5,
     align: "center",
+    sortable: false,
   },
   {
     field: "destinationAccount",
@@ -69,6 +75,7 @@ const columns = (handleAcceptClick, handleCancelClick) => [
     headerAlign: "center",
     flex: 2.5,
     align: "center",
+    sortable: false,
   },
   {
     field: "purchaseCode",
@@ -76,6 +83,7 @@ const columns = (handleAcceptClick, handleCancelClick) => [
     headerAlign: "center",
     flex: 3,
     align: "center",
+    sortable: false,
   },
   {
     field: "status",
@@ -88,11 +96,11 @@ const columns = (handleAcceptClick, handleCancelClick) => [
       <Chip
         label={params.value === "Pending" ? "Đang chờ" : ""}
         color="primary"
-        sx={{width: 100}}
+        sx={{ width: 100 }}
       />
     ),
+    sortable: false,
   },
-  
 
   {
     field: "id",
@@ -117,6 +125,7 @@ const columns = (handleAcceptClick, handleCancelClick) => [
         </IconButton>
       </Stack>
     ),
+    sortable: false,
   },
 ];
 
@@ -191,7 +200,7 @@ export default function Redeem() {
                 fullName: transaction.fullName,
                 paymentMethod: transaction.paymentMethod,
                 point: transaction.point,
-                amount: `${transaction.amount} ${transaction.currency}`,
+                amount: `${formatNumber(+transaction.amount)} ${transaction.currency}`,
                 date: transaction.date,
                 status: transaction.status,
                 purchaseCode: transaction.purchaseCode,
@@ -210,6 +219,7 @@ export default function Redeem() {
                 setSize(newPage.pageSize);
               }}
               rowSelection={false}
+              disableColumnMenu = {true}
               rowCount={totalRecord}
               pageSizeOptions={[5, 10, 15, 20]}
               sx={{ maxWidth: "100%" }}
@@ -251,3 +261,17 @@ const fetchData = async (
     }
   }
 };
+
+function formatNumber(number) {
+  const numberString = String(number);
+  const parts = [];
+
+  for (let i = numberString.length - 1, j = 0; i >= 0; i--, j++) {
+    if (j !== 0 && j % 3 === 0) {
+      parts.unshift(".");
+    }
+    parts.unshift(numberString[i]);
+  }
+
+  return parts.join("");
+}

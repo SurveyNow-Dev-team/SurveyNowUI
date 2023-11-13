@@ -23,6 +23,7 @@ const columns = (handleAcceptClick, handleCancelClick, convertStatus) => [
     headerAlign: "center",
     flex: 2,
     align: "center",
+    sortable: false,
   },
   {
     field: "paymentMethod",
@@ -30,6 +31,7 @@ const columns = (handleAcceptClick, handleCancelClick, convertStatus) => [
     headerAlign: "center",
     flex: 2,
     align: "center",
+    sortable: false,
   },
   {
     field: "point",
@@ -38,6 +40,7 @@ const columns = (handleAcceptClick, handleCancelClick, convertStatus) => [
     headerAlign: "center",
     flex: 1,
     align: "center",
+    sortable: false,
   },
   {
     field: "amount",
@@ -46,6 +49,7 @@ const columns = (handleAcceptClick, handleCancelClick, convertStatus) => [
     minWidth: 80,
     flex: 2,
     align: "center",
+    sortable: false,
   },
   {
     field: "date",
@@ -54,6 +58,7 @@ const columns = (handleAcceptClick, handleCancelClick, convertStatus) => [
     minWidth: 160,
     flex: 4,
     align: "center",
+    sortable: false,
   },
   {
     field: "sourceAccount",
@@ -61,6 +66,7 @@ const columns = (handleAcceptClick, handleCancelClick, convertStatus) => [
     headerAlign: "center",
     flex: 2.5,
     align: "center",
+    sortable: false,
   },
   {
     field: "destinationAccount",
@@ -68,6 +74,7 @@ const columns = (handleAcceptClick, handleCancelClick, convertStatus) => [
     headerAlign: "center",
     flex: 2.5,
     align: "center",
+    sortable: false,
   },
   {
     field: "purchaseCode",
@@ -75,6 +82,7 @@ const columns = (handleAcceptClick, handleCancelClick, convertStatus) => [
     headerAlign: "center",
     flex: 3,
     align: "center",
+    sortable: false,
   },
   {
     field: "status",
@@ -89,6 +97,7 @@ const columns = (handleAcceptClick, handleCancelClick, convertStatus) => [
         <Chip label={object.label} color={object.color} sx={{ width: 100 }} />
       );
     },
+    sortable: false,
   },
 
   {
@@ -114,6 +123,7 @@ const columns = (handleAcceptClick, handleCancelClick, convertStatus) => [
         </IconButton>
       </Stack>
     ),
+    sortable: false,
   },
 ];
 
@@ -160,8 +170,7 @@ export default function Purchase() {
 
   return (
     <div className="mx-4 md:m-10 mt-5 p-6 md:p-6 bg-white rounded-3xl">
-      {/* <div className="m-2 md:m-10 mt-10 p-2 md:p-10 bg-white rounded-3xl"> */}
-      <Header title="Yêu cầu mua điểm" category="" />
+      <Header title="Yêu cầu mua điểm" />
       <AcceptPurchaseModal
         state={acceptState}
         setState={setAcceptState}
@@ -195,7 +204,9 @@ export default function Purchase() {
                 fullName: transaction.fullName,
                 paymentMethod: transaction.paymentMethod,
                 point: transaction.point,
-                amount: `${transaction.amount} ${transaction.currency}`,
+                amount: `${formatNumber(+transaction.amount)} ${
+                  transaction.currency
+                }`,
                 date: transaction.date,
                 status: transaction.status,
                 purchaseCode: transaction.purchaseCode,
@@ -218,6 +229,9 @@ export default function Purchase() {
                 setSize(newPage.pageSize);
               }}
               rowSelection={false}
+              disableColumnSelector={true}
+              disableColumnFilter={true}
+              disableColumnMenu={true}
               rowCount={totalRecord}
               pageSizeOptions={[5, 10, 15, 20]}
               sx={{ maxWidth: "100%" }}
@@ -260,3 +274,17 @@ const fetchData = async (
     }
   }
 };
+
+function formatNumber(number) {
+  const numberString = String(number);
+  const parts = [];
+
+  for (let i = numberString.length - 1, j = 0; i >= 0; i--, j++) {
+    if (j !== 0 && j % 3 === 0) {
+      parts.unshift(".");
+    }
+    parts.unshift(numberString[i]);
+  }
+
+  return parts.join("");
+}
