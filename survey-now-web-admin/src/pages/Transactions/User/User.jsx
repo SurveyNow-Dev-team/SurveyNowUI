@@ -1,11 +1,13 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 // import { Chip } from "@mui/material";
-import { Col, Row } from "antd";
-
+// import { Col, Row } from "antd";
+import Box from "@mui/material/Box";
+import { useSelector } from "react-redux";
 import { getAllUsers } from "../../../apis/users";
 // import { getUserById } from "../../../apis/users";
 import { Header } from "../../../components";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const columns = [
   {
@@ -82,6 +84,7 @@ export default function User() {
   const [message, setMessage] = React.useState("");
   const [totalRecord, setTotalRecord] = React.useState(0);
   const [loading, setLoading] = React.useState(true);
+  const currentColor = useSelector((state) => state.state.currentColor);
 
   React.useEffect(() => {
     console.log(`Page: ${page}`);
@@ -94,21 +97,6 @@ export default function User() {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  //   const fetchGetUserByIdData = async () => {
-  //     try {
-  //       // Fetch data from another API
-  //       const additionalData = await getUserById(
-  //         page !== undefined ? page + 1 : 0,
-  //         size || 5
-  //       );
-
-  //       // Process and use additional data as needed
-  //       console.log("Additional Data:", additionalData);
-  //     } catch (error) {
-  //       console.error("Error fetching additional data", error);
-  //     }
-  //   };
-
   return (
     // <Row>
     //   <Col span={5} className="col-3"></Col>
@@ -117,7 +105,10 @@ export default function User() {
      {/* <div className="m-2 md:m-10 mt-10 p-2 md:p-10 bg-white rounded-3xl"> */}
       <Header title="Người dùng" category="" />
       {loading ? (
-        <p>Tải yêu cầu...</p>
+        // Display the spinner when loading is true
+        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center"}}>
+          <CircularProgress sx={{ color: currentColor }}/>
+        </Box>
       ) : (
         <div style={{ minHeight: 400, width: "100%" }}>
           <div style={{ display: "block", width: "100%" }}>
