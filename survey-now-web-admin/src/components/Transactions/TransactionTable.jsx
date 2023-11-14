@@ -9,6 +9,7 @@ const columns = (convertStatus, convertTransactionType) => [
     headerAlign: "center",
     flex: 2,
     align: "center",
+    sortable: false,
   },
   {
     field: "transactionType",
@@ -23,6 +24,7 @@ const columns = (convertStatus, convertTransactionType) => [
         <Chip label={object.label} color={object.color} sx={{ width: 90 }} />
       );
     },
+    sortable: false,
   },
   {
     field: "paymentMethod",
@@ -30,14 +32,16 @@ const columns = (convertStatus, convertTransactionType) => [
     headerAlign: "center",
     flex: 2,
     align: "center",
+    sortable: false,
   },
   {
     field: "point",
     headerName: "Điểm",
     type: "number",
     headerAlign: "center",
-    flex: 1,
+    flex: 1.5,
     align: "center",
+    sortable: false,
   },
   {
     field: "amount",
@@ -46,6 +50,7 @@ const columns = (convertStatus, convertTransactionType) => [
     minWidth: 80,
     flex: 2,
     align: "center",
+    sortable: false,
   },
   {
     field: "date",
@@ -54,6 +59,7 @@ const columns = (convertStatus, convertTransactionType) => [
     minWidth: 160,
     flex: 4,
     align: "center",
+    sortable: false,
   },
   {
     field: "sourceAccount",
@@ -61,6 +67,7 @@ const columns = (convertStatus, convertTransactionType) => [
     headerAlign: "center",
     flex: 2.5,
     align: "center",
+    sortable: false,
   },
   {
     field: "destinationAccount",
@@ -68,6 +75,7 @@ const columns = (convertStatus, convertTransactionType) => [
     headerAlign: "center",
     flex: 2.5,
     align: "center",
+    sortable: false,
   },
   {
     field: "purchaseCode",
@@ -75,6 +83,7 @@ const columns = (convertStatus, convertTransactionType) => [
     headerAlign: "center",
     flex: 3,
     align: "center",
+    sortable: false,
   },
   {
     field: "status",
@@ -89,6 +98,7 @@ const columns = (convertStatus, convertTransactionType) => [
         <Chip label={object.label} color={object.color} sx={{ width: 100 }} />
       );
     },
+    sortable: false,
   },
 ];
 
@@ -129,7 +139,7 @@ export default function TransactionTable({
             fullName: transaction.fullName,
             paymentMethod: transaction.paymentMethod,
             point: transaction.point,
-            amount: `${transaction.amount} ${transaction.currency}`,
+            amount: `${formatNumber(+transaction.amount)} ${transaction.currency}`,
             date: transaction.date,
             status: transaction.status,
             purchaseCode: transaction.purchaseCode,
@@ -150,6 +160,8 @@ export default function TransactionTable({
             setPage(newPage.page);
             setSize(newPage.pageSize);
           }}
+          rowSelection={false}
+          disableColumnMenu = {true}
           rowCount={totalRecord}
           pageSizeOptions={[5, 10, 15, 20]}
           // checkboxSelection
@@ -157,4 +169,18 @@ export default function TransactionTable({
       )}
     </div>
   );
+}
+
+function formatNumber(number) {
+  const numberString = String(number);
+  const parts = [];
+
+  for (let i = numberString.length - 1, j = 0; i >= 0; i--, j++) {
+    if (j !== 0 && j % 3 === 0) {
+      parts.unshift(".");
+    }
+    parts.unshift(numberString[i]);
+  }
+
+  return parts.join("");
 }
