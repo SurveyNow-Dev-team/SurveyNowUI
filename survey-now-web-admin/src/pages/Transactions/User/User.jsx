@@ -88,7 +88,6 @@ export default function User() {
     console.log(`Size: ${size}`);
     fetchData(page, size, setData, setMessage, setTotalRecord, setLoading);
   }, [page, size]);
-  ``;
 
   const formatDate = (dateString) => {
     const options = { day: "2-digit", month: "2-digit", year: "numeric" };
