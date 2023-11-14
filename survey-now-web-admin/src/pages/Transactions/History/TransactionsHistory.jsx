@@ -8,6 +8,7 @@ import TransactionStatusSelect from "../../../components/Transactions/Transactio
 import TransactionDurationPicker from "../../../components/Transactions/TransactionDurationPicker";
 import TransactionSortOrderSelect from "../../../components/Transactions/TransactionSortOrderSelect";
 import dayjs from "dayjs";
+import { Col, Row } from "antd";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -174,6 +175,7 @@ function TransactionHistory() {
           setSize={setSize}
         />
       )}
+      
     </div>
   );
 }

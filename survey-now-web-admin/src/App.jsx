@@ -34,6 +34,7 @@ import {
 } from "./pages";
 import "./App.css";
 import PrivateRoute from "./components/Route/PrivateRoute";
+import User from "./pages/Transactions/User/User";
 
 const App = () => {
   return (
@@ -85,6 +86,7 @@ const App = () => {
             />
           }
         />
+        
 
         {/* apps  */}
         <Route
@@ -237,6 +239,15 @@ const App = () => {
             <PrivateRoute
               page="transactions-history"
               component={<MainComponent child={<TransactionsHistory />} />}
+            />
+          }
+        />
+         <Route
+          path="/user"
+          element={
+            <PrivateRoute
+              page="user"
+              component={<MainComponent child={<User />} />}
             />
           }
         />

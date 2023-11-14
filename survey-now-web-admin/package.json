@@ -22,6 +22,7 @@
     "@syncfusion/ej2-react-popups": "^19.4.52",
     "@syncfusion/ej2-react-richtexteditor": "^19.4.50",
     "@syncfusion/ej2-react-schedule": "^19.4.50",
+    "antd": "^5.11.0",
     "axios": "^1.6.0",
     "dayjs": "^1.11.10",
     "jwt-decode": "^4.0.0",

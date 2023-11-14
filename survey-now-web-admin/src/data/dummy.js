@@ -543,6 +543,7 @@ export const links = [
         value: "Yêu cầu đổi điểm",
         icon: <ShoppingCartCheckoutIcon fontSize="small" />,
       },
+      
       // {
       //   name: 'orders',
       //   value: 'orders',
@@ -558,6 +559,16 @@ export const links = [
       //   value: 'employees',
       //   icon: <RiContactsLine />,
       // },
+    ],
+  },
+  {
+    title: "User",
+    links: [
+      {
+        name: "user",
+        value: "Người dùng",
+        icon: <SellIcon fontSize="small" />,
+      },
     ],
   },
   // {
