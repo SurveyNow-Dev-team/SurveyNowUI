@@ -1,8 +1,8 @@
-body::before {
+/* body::before {
   content: "";
   display: block;
   height: 70px;
-}
+} */
 
 body {
   margin: 0;
