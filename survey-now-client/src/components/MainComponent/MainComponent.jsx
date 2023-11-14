@@ -13,10 +13,9 @@ const MainComponent = ({ child }) => {
               <Navbar />
             </div>
             <div
-              container
               style={{
                 minHeight: "70vh",
-                width: "100%",
+                width: "90%",
                 margin: "auto",
               }}
             >
