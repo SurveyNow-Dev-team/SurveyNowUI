@@ -47,6 +47,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import SellIcon from "@mui/icons-material/Sell";
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 
 export const gridOrderImage = (props) => (
   <div>
@@ -567,7 +568,7 @@ export const links = [
       {
         name: "user",
         value: "Người dùng",
-        icon: <SellIcon fontSize="small" />,
+        icon: <PeopleAltIcon fontSize="small" />,
       },
     ],
   },
