@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import MainComponent from "./components/MainComponent/MainComponent";
+import Login from "./pages/Login/Login";
 
 import "./App.css";
 import PrivateRoute from "./components/Route/PrivateRoute";
@@ -11,19 +12,19 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         {/* Login */}
-        {/* <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/" element={<Navigate to="/dang-nhap" />} />
         <Route
-          path="/login"
-          element={<PrivateRoute page="login" component={<p>Hello</p>} />}
-        /> */}
+          path="/dang-nhap"
+          element={<PrivateRoute page="dang-nhap" component={<Login />} />}
+        />
 
-        {/* dashboard  */}
+        {/* khao sat */}
         <Route
-          path="/login"
+          path="/khao-sat"
           element={
             <PrivateRoute
-              page="login"
-              component={<MainComponent child={<p>Hello</p>} />}
+              page="khao-sat"
+              component={<MainComponent child={<p>Khảo sát</p>} />}
             />
           }
         />

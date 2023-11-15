@@ -14,23 +14,43 @@ import {
   Box,
   AppBar,
   Link,
+  Chip,
 } from "@mui/material";
+
+import { NavLink, useNavigate } from "react-router-dom";
+
+import LogoutIcon from "@mui/icons-material/Logout";
 
 import { blue } from "@mui/material/colors";
 
 import Logo from "../../assets/images/logo/logo-dense.png";
+import { useSelector } from "react-redux";
 
 const pages = [
   { page: "Trang chủ", link: "#" },
   { page: "Về chúng tôi", link: "#" },
   { page: "Trợ giúp", link: "#" },
-  { page: "Khảo sát", link: "#" },
+  { page: "Khảo sát", link: "khao-sat" },
 ];
 const settings = ["Hồ sơ", "Tài khoản", "Đăng xuất"];
+
+const activeLink =
+  "d-flex align-items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-white text-md m-2";
+const normalLink =
+  "d-flex align-items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-700 dark:text-gray-200 dark:hover:text-black hover:bg-light-gray m-2";
 
 const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const navigate = useNavigate();
+
+  const activeNav = useSelector((state) => state.state.activeNav);
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/dang-nhap");
+  };
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -81,8 +101,18 @@ const Navbar = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page.page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page.page}</Typography>
+                <MenuItem key={page.link} onClick={handleCloseNavMenu}>
+                  <NavLink
+                    to={`/${page.link}`}
+                    key={page.link}
+                    className={
+                      activeNav === page.link ? activeLink : normalLink
+                    }
+                  >
+                    <span className="capitalize ">
+                      {page?.page || page.link}
+                    </span>
+                  </NavLink>
                 </MenuItem>
               ))}
             </Menu>
@@ -123,18 +153,26 @@ const Navbar = () => {
             <Tooltip title="Mở cài đặt">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Stack direction="row" spacing={1} alignItems={"center"}>
-                <Avatar
-                  alt="Avatar"
-                  title="Avatar"
-                  src="/broken-image.jpg"
-                  sx={{ bgcolor: blue[500] }}
-                />
-                <Typography variant="body1" color={"white"}>Admin</Typography>
+                  <Avatar
+                    alt="Avatar"
+                    title="Avatar"
+                    src="/broken-image.jpg"
+                    sx={{ bgcolor: blue[500] }}
+                  />
+                  <Typography variant="body1" color={"white"}>
+                    Admin
+                  </Typography>
                 </Stack>
               </IconButton>
             </Tooltip>
             <Menu
-              sx={{ mt: "45px" }}
+              sx={{
+                mt: "45px",
+                width: "300px",
+                left: "auto",
+                right: "calc(100% - 310px)",
+                borderRadius: "20px",
+              }}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
@@ -149,11 +187,36 @@ const Navbar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
+              {/* {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
-              ))}
+              ))} */}
+
+              <MenuItem onClick={handleCloseUserMenu} alignItems="center">
+                <Chip
+                  color="default"
+                  disabled={false}
+                  size="medium"
+                  variant="filled"
+                  clickable={true}
+                  label={
+                    <MenuItemCustom
+                      name={"Đăng xuất"}
+                      icon={<LogoutIcon fontSize={"small"} color={"#00B14F"} />}
+                    />
+                  }
+                  onClick={() => handleLogout()}
+                  sx={{
+                    borderRadius: "4px",
+                    width: 260,
+                    "& .MuiChip-label": {
+                      display: "inline-flex",
+                      width: "90%",
+                    },
+                  }}
+                />
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>
@@ -163,3 +226,19 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+const MenuItemCustom = ({ name, icon }) => {
+  return (
+    <Stack
+      direction={"row"}
+      justifyContent="space-between"
+      alignItems="center"
+      sx={{ width: "100%" }}
+    >
+      <Typography variant="body2">{name}</Typography>
+      <Typography variant="body2" color={"#00B14F"}>
+        {icon}
+      </Typography>
+    </Stack>
+  );
+};

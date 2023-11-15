@@ -9,14 +9,14 @@ const PrivateRoute = ({ page, component: Component }) => {
     return <Navigate to="/error404" state={{ from: location }} replace />;
   } else {
     if (!user) {
-      if (/*page !== "forgotPassword" &&*/ page !== "login") {
-        return <Navigate to="/login" state={{ from: location }} replace />;
+      if (page !== "dang-ky" && page !== "dang-nhap") {
+        return <Navigate to="/dang-nhap" state={{ from: location }} replace />;
       } else {
         return Component;
       }
     } else {
-      if (/*page === "forgotPassword" ||*/ page === "login") {
-        return <Navigate to="/ecommerce" state={{ from: location }} replace />;
+      if (page === "dang-ky" || page === "dang-nhap") {
+        return <Navigate to="/khao-sat" state={{ from: location }} replace />;
       } else {
         return Component;
       }
