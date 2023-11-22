@@ -25,7 +25,6 @@ export default function TransactionStatusSelect({
           <MenuItem value={"All"}>Tất cả</MenuItem>
           <MenuItem value={"Success"}>Thành công</MenuItem>
           <MenuItem value={"Fail"}>Thất bại</MenuItem>
-          <MenuItem value={"Pending"}>Chờ xử lý</MenuItem>
           <MenuItem value={"Cancel"}>Đã hủy</MenuItem>
         </Select>
       </FormControl>

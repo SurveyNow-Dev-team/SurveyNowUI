@@ -17,6 +17,16 @@ import AcceptPurchaseModal from "../../../components/Transactions/AcceptPurchase
 import ConfirmCancel from "../../../components/Transactions/DeclinePurchase/Confirm.";
 
 const columns = (handleAcceptClick, handleCancelClick, convertStatus) => [
+ 
+  {
+    field: "transactionId",
+    headerName: "Id",
+    headerAlign: "center",
+    flex: 0.5,
+    minWidth: 60,
+    align: "center",
+    sortable: false,
+  },
   {
     field: "fullName",
     headerName: "Người dùng",
@@ -200,6 +210,7 @@ export default function Purchase() {
           <div style={{ display: "block", width: "100%" }}>
             <DataGrid
               rows={data.map((transaction) => ({
+                transactionId: transaction.id,
                 id: transaction.id,
                 fullName: transaction.fullName,
                 paymentMethod: transaction.paymentMethod,

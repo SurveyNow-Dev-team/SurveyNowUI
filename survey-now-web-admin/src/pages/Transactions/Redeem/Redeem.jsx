@@ -19,6 +19,15 @@ import { Header } from "../../../components";
 
 const columns = (handleAcceptClick, handleCancelClick) => [
   {
+    field: "transactionId",
+    headerName: "Id",
+    headerAlign: "center",
+    flex: 0.5,
+    minWidth: 60,
+    align: "center",
+    sortable: false,
+  },
+  {
     field: "fullName",
     headerName: "Người dùng",
     headerAlign: "center",
@@ -199,6 +208,7 @@ export default function Redeem() {
           <div style={{ display: "block", width: "100%" }}>
             <DataGrid
               rows={data.map((transaction) => ({
+                transactionId: transaction.id,
                 id: transaction.id,
                 fullName: transaction.fullName,
                 paymentMethod: transaction.paymentMethod,
