@@ -208,9 +208,11 @@ export default function Purchase() {
                 amount: `${formatNumber(+transaction.amount)} ${
                   transaction.currency
                 }`,
+                sourceAccount: transaction.sourceAccount || "",
+                destinationAccount: transaction.destinationAccount || "",
                 date: transaction.date,
                 status: transaction.status,
-                purchaseCode: transaction.purchaseCode,
+                purchaseCode: transaction.purchaseCode || "",
               }))}
               columns={columns(
                 handleAcceptClick,

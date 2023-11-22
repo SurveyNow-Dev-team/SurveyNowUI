@@ -205,6 +205,8 @@ export default function Redeem() {
                 paymentMethod: transaction.paymentMethod,
                 point: transaction.point,
                 amount: `${formatNumber(+transaction.amount)} ${transaction.currency}`,
+                sourceAccount: transaction.sourceAccount || "",
+                destinationAccount: transaction.destinationAccount || "",
                 date: transaction.date,
                 status: transaction.status,
                 purchaseCode: transaction.purchaseCode,
